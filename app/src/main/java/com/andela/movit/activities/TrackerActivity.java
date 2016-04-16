@@ -1,7 +1,9 @@
-package com.andela.movit;
+package com.andela.movit.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.andela.movit.R;
 
 public class TrackerActivity extends AppCompatActivity {
 
