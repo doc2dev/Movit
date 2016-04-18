@@ -9,5 +9,42 @@
     tools:context=".fragments.SplashFragment"
     tools:showIn="@layout/activity_splash">
 
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="@dimen/dimen_img"
+        android:layout_height="@dimen/dimen_img"
+        android:src="@drawable/gps_search"
+        android:layout_centerInParent="true"
+        android:id="@+id/lock"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lock"
+        android:text="@string/label_lock"
+        android:textColor="@color/colorPrimary"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/font_18"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_slogan"
+        android:textSize="@dimen/font_20"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/colorPrimary"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/slogan"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/app_name"
+        android:text="@string/label_movit"
+        android:layout_above="@id/slogan"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:textSize="48sp"
+        android:textColor="@color/colorPrimary"
+        />
 </RelativeLayout>

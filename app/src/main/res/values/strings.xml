@@ -2,4 +2,8 @@
     <string name="app_name">Movit</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="label_lock">Acquiring location, please wait...</string>
+    <string name="label_slogan">Tracking for Productivity</string>
+    <string name="label_movit">Movit!</string>
+    <string name="google_app_id">AIzaSyCIm1LSjXvyHTsuaHg4_-bUmagqboClxEo</string>
 </resources>
