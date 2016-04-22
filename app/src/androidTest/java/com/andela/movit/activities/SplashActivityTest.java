@@ -6,6 +6,7 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.andela.movit.Movit;
 import com.andela.movit.activities.SplashActivity;
 import com.andela.movit.activities.TrackerActivity;
 import com.andela.movit.location.LocationHelper;
@@ -28,7 +29,9 @@ public class SplashActivityTest {
     @Test
     public void testTransition() throws Exception {
         Intents.init();
-        Espresso.registerIdlingResources(LocationHelper.getLocationHelper());
+        Movit app = Movit.getApp();
+        app.setIdle(false);
+        Espresso.registerIdlingResources(app);
         intended(hasComponent(TrackerActivity.class.getCanonicalName()));
         Intents.release();
     }
