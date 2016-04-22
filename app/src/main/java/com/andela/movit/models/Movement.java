@@ -1,11 +1,24 @@
 package com.andela.movit.models;
 
-
 public class Movement {
 
     private String placeName;
 
     private String activityName;
+
+    private double latitude;
+
+    private double longitude;
+
+    private long timeStamp;
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 
     public String getActivityName() {
         return activityName;
@@ -14,10 +27,6 @@ public class Movement {
     public void setActivityName(String activityName) {
         this.activityName = activityName;
     }
-
-    private double latitude;
-
-    private double longitude;
 
     public String getPlaceName() {
         return placeName;
