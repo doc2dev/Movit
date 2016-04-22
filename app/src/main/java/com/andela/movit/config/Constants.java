@@ -4,7 +4,9 @@ public enum Constants {
     PLACE_NAME("PLACE"),
     ACTIVITY_NAME("ACTIVITY"),
     LATITUDE("LAT"),
-    LONGITUDE("LNG");
+    LONGITUDE("LNG"),
+    SERVICE_NAME("ActivityRecognitionService"),
+    ACTIVITY_ACTION("com.andela.intent.action.BROADCAST_ACTION");
 
     private final String value;
 
