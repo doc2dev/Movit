@@ -1,10 +1,13 @@
 package com.andela.movit;
 
 import android.app.Application;
+import android.support.test.espresso.IdlingResource;
 
-public class Movit extends Application{
+public class Movit extends Application implements IdlingResource {
 
-    private boolean isRunning;
+    protected boolean isIdle = false;
+
+    protected IdlingResource.ResourceCallback resourceCallback;
 
     @Override
     public void onCreate() {
@@ -14,15 +17,29 @@ public class Movit extends Application{
 
     private static Movit app;
 
-    public boolean isRunning() {
-        return isRunning;
-    }
-
-    public void setRunning(boolean running) {
-        isRunning = running;
-    }
-
     public static Movit getApp() {
         return app;
+    }
+
+    @Override
+    public String getName() {
+        return "LocationHelper";
+    }
+
+    @Override
+    public boolean isIdleNow() {
+        return isIdle;
+    }
+
+    public void setIdle(boolean idle) {
+        isIdle = idle;
+        if (isIdle && resourceCallback != null) {
+            resourceCallback.onTransitionToIdle();
+        }
+    }
+
+    @Override
+    public void registerIdleTransitionCallback(ResourceCallback callback) {
+        this.resourceCallback = callback;
     }
 }

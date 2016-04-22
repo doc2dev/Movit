@@ -4,4 +4,9 @@
     <color name="colorPrimaryDark">#512DA8</color>
     <color name="colorPrimaryLight">#D1C4E9</color>
     <color name="colorAccent">#8BC34A</color>
+    <color name="colorTextPrimary">#212121</color>
+    <color name="colorTextSecondary">#727272</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorDivider">#B6B6B6</color>
+    <color name="colorTrack">#9575CD</color>
 </resources>

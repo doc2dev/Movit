@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/dimen_16"
+    android:paddingEnd="@dimen/dimen_16"
+    android:paddingTop="@dimen/dimen_16"
+    android:paddingBottom="@dimen/dimen_16">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="77dp"
+        android:src="@drawable/tracker"
+        android:id="@+id/tracker_icon"
+        android:tint="@color/colorDivider"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/tracker_icon"
+        android:text="@string/label_unknown"
+        android:layout_marginStart="@dimen/dimen_16"
+        android:textSize="@dimen/font_24"
+        android:textColor="@color/colorTextPrimary"
+        android:id="@+id/location_name"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_latLng"
+        android:layout_below="@id/location_name"
+        android:layout_toEndOf="@id/tracker_icon"
+        android:layout_marginStart="@dimen/dimen_16"
+        android:layout_marginTop="@dimen/dimen_16"
+        android:textSize="16sp"
+        android:id="@+id/location_coords"/>
+
+    <FrameLayout
+        android:layout_width="@dimen/dimen_img"
+        android:layout_height="@dimen/dimen_img"
+        android:id="@+id/giphy"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/locked"
+            android:tint="@color/colorDivider"
+            android:id="@+id/lock_static"/>
+
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/locked_gif"
+            android:id="@+id/lock_gif"
+            android:visibility="gone"
+            android:tint="@color/colorDivider"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/notify_container"
+        android:layout_below="@id/giphy"
+        android:layout_marginTop="@dimen/dimen_24"
+        android:layout_marginStart="@dimen/dimen_16"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_activity_name"
+            android:textSize="@dimen/font_20"
+            android:textColor="@color/colorTextPrimary"
+            android:id="@+id/activity_name"/>
+
+        <Chronometer
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:textSize="@dimen/font_24"
+            android:textColor="@color/colorTextSecondary"
+            android:id="@+id/counter"
+            android:layout_marginStart="@dimen/dimen_32"/>
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_start_tracking"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/dimen_8"
+        android:theme="@style/TrackButton"
+        android:layout_marginTop="@dimen/dimen_4"
+        android:textSize="@dimen/font_24"
+        android:padding="@dimen/dimen_16"
+        android:layout_marginBottom="@dimen/dimen_8"
+        android:textColor="@color/colorWhite"
+        android:id="@+id/trackButton"/>
+</RelativeLayout>
