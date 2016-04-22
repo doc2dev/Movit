@@ -1,17 +1,14 @@
 package com.andela.movit.location;
 
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.andela.movit.listeners.MovementCallback;
+import com.andela.movit.listeners.LocationCallback;
 import com.andela.movit.listeners.PlaceNameCallback;
 import com.andela.movit.models.Movement;
-import com.andela.movit.test_support.TestableAsync;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.ActivityRecognition;
@@ -19,9 +16,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import java.util.List;
-
-public class LocationHelper extends TestableAsync implements GoogleApiClient.ConnectionCallbacks,
+public class LocationHelper implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private Context context;
@@ -30,37 +25,21 @@ public class LocationHelper extends TestableAsync implements GoogleApiClient.Con
 
     private LocationRequest locationRequest;
 
-    private MovementCallback movementCallback;
+    private LocationCallback locationCallback;
 
-    private static LocationHelper locationHelper;
-
-    private boolean isActive;
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setContext(Context context) {
+    public LocationHelper(Context context) {
         this.context = context;
     }
 
-    public static LocationHelper getLocationHelper() {
-        if (locationHelper == null) {
-            locationHelper = new LocationHelper();
-        }
-        return locationHelper;
+    public void setLocationCallback(LocationCallback locationCallback) {
+        this.locationCallback = locationCallback;
     }
 
-    public void setMovementCallback(MovementCallback movementCallback) {
-        this.movementCallback = movementCallback;
-    }
-
-    public void connect(boolean includeActivityRecognition) {
+    public void connect() {
         if (apiClient == null) {
             initializeApiClient();
         }
         apiClient.connect();
-        isActive = true;
     }
 
     private void initializeLocationRequest() {
@@ -80,8 +59,9 @@ public class LocationHelper extends TestableAsync implements GoogleApiClient.Con
     }
 
     public void disconnect() {
-        stopLocationUpdates();
-        isActive = false;
+        if (apiClient.isConnected()) {
+            stopLocationUpdates();
+        }
     }
 
     private void stopLocationUpdates() {
@@ -125,26 +105,6 @@ public class LocationHelper extends TestableAsync implements GoogleApiClient.Con
     }
 
     private void getPlaceName(Movement movement) {
-        try {
-            getNameFromGeocoder(movement);
-        }
-        catch (Exception exception) {
-            getNameFromGeoHelper(movement);
-        }
-    }
-
-    private void getNameFromGeocoder(Movement movement) throws Exception {
-        Geocoder geocoder = new Geocoder(context);
-        List<Address> addresses
-                = geocoder.getFromLocation(movement.getLatitude(), movement.getLongitude(), 1);
-        if(addresses != null && addresses.size() > 0 ){
-            Address address = addresses.get(0);
-            movement.setPlaceName(address.getFeatureName());
-            movementCallback.onMovementDetected(movement);
-        }
-    }
-
-    private void getNameFromGeoHelper(final Movement movement) {
         GeoHelper helper = new GeoHelper(context);
         helper.setCallback(getPlaceNameCallback(movement));
         helper.getPlaceName(movement.getLatitude(), movement.getLongitude());
@@ -155,12 +115,7 @@ public class LocationHelper extends TestableAsync implements GoogleApiClient.Con
             @Override
             public void onPlaceNameFound(String placeName) {
                 movement.setPlaceName(placeName);
-                movementCallback.onMovementDetected(movement);
-            }
-
-            @Override
-            public void onError(String message) {
-                movementCallback.onError(message);
+                locationCallback.onLocationDetected(movement);
             }
         };
     }
