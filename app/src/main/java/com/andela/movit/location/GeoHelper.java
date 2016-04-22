@@ -1,11 +1,15 @@
 package com.andela.movit.location;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 
 import com.andela.movit.listeners.PlaceNameCallback;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+
+import java.util.List;
 
 public class GeoHelper {
     private Context context;
@@ -25,11 +29,11 @@ public class GeoHelper {
 
     public void getPlaceName(double latitude, double longitude) {
         String latLng = Double.toString(latitude) + "," + Double.toString(longitude);
-        String url =URL_BASE + latLng;
-        fetchPlaceName(url);
+        String url = URL_BASE + latLng;
+        fetchFromRestApi(url);
     }
 
-    private void fetchPlaceName(String url) {
+    private void fetchFromRestApi(String url) {
         Ion.with(context)
                 .load(url)
                 .asJsonObject()
@@ -40,9 +44,7 @@ public class GeoHelper {
         return new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
-                if (e != null) {
-                    callback.onError(e.getMessage());
-                } else {
+                if (e == null) {
                     String formattedAddress = extractAddress(result);
                     callback.onPlaceNameFound(formattedAddress);
                 }
