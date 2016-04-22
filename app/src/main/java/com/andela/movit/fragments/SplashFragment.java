@@ -10,12 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.andela.movit.Movit;
 import com.andela.movit.R;
 
 import com.andela.movit.activities.TrackerActivity;
-import com.andela.movit.listeners.MovementCallback;
+import com.andela.movit.listeners.LocationCallback;
 import com.andela.movit.models.Movement;
-import com.andela.movit.utilities.MovementHelper;
+import com.andela.movit.location.LocationHelper;
 import com.andela.movit.utilities.Utility;
 
 
@@ -27,7 +28,7 @@ public class SplashFragment extends Fragment {
 
     private Activity activity;
 
-    private MovementHelper movementHelper;
+    private LocationHelper locationHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,42 +47,35 @@ public class SplashFragment extends Fragment {
         appName = (TextView) view.findViewById(R.id.app_name);
         Typeface typeface = Typeface.createFromAsset(activity.getAssets(), "fonts/custom.ttf");
         appName.setTypeface(typeface);
-        movementHelper = MovementHelper.getMovementHelper();
-        movementHelper.setContext(activity);
-        movementHelper.setMovementCallback(getMovementCallback());
+        locationHelper = new LocationHelper(activity);
+        locationHelper.setLocationCallback(getMovementCallback());
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        movementHelper.apiInit();
-        movementHelper.connect();
+        locationHelper.connect();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        movementHelper.disconnect();
+        locationHelper.disconnect();
     }
 
-    private MovementCallback getMovementCallback() {
-        return new MovementCallback() {
+    private LocationCallback getMovementCallback() {
+        return new LocationCallback() {
             @Override
-            public void onMovementDetected(Movement movement) {
-                movementHelper.setIdle(true);
+            public void onLocationDetected(Movement movement) {
+                Movit.getApp().setIdle(true);
                 doTransitionToTracker(movement);
-            }
-
-            @Override
-            public void onError(String message) {
-                Utility.makeToast(activity, message);
             }
         };
     }
 
     private void doTransitionToTracker(Movement movement) {
         Utility.launchActivityWithMovement(activity, TrackerActivity.class, movement);
-        movementHelper.disconnect();
+        locationHelper.disconnect();
         activity.finish();
     }
 }
