@@ -1,4 +1,4 @@
-package com.andela.movit.utilities;
+package com.andela.movit.location;
 
 import android.content.Context;
 

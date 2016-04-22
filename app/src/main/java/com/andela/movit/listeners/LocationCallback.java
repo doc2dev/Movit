@@ -2,7 +2,7 @@ package com.andela.movit.listeners;
 
 import com.andela.movit.models.Movement;
 
-public interface MovementCallback {
+public interface LocationCallback {
     void onMovementDetected(Movement movement);
     void onError(String message);
 }
