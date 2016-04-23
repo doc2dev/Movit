@@ -5,6 +5,8 @@ public enum Constants {
     ACTIVITY_NAME("ACTIVITY"),
     LATITUDE("LAT"),
     LONGITUDE("LNG"),
+    TIMESTAMP("STAMP"),
+    ELAPSED("ELAPSED"),
     SERVICE_NAME("ActivityRecognitionService"),
     ACTIVITY_ACTION("com.andela.intent.action.BROADCAST_ACTION");
 

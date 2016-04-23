@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Chronometer;
 import android.widget.Toast;
 
+import com.andela.movit.Movit;
 import com.andela.movit.R;
 import com.andela.movit.activityrecognition.RecognitionHelper;
 import com.andela.movit.async.DbAsync;
@@ -94,22 +95,22 @@ public class TrackingHelper {
     public void startTracking() {
         locationHelper.connect();
         recognitionHelper.connect();
-        isActive = true;
+        Movit.getApp().setTrackerActive(true);
     }
 
     public void stopTracking() {
         locationHelper.disconnect();
         recognitionHelper.disconnect();
-        isActive = false;
+        Movit.getApp().setTrackerActive(false);
         isCurrentActivityLogged = false;
     }
 
     public boolean isActive() {
-        return isActive;
+        return Movit.getApp().isTrackerActive();
     }
 
-    public boolean hasTimeElapsed(Chronometer chronometer) {
-        long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
+    public boolean hasTimeElapsed(long elapsedTime) {
+        long elapsedMillis = SystemClock.elapsedRealtime() - elapsedTime;
         return elapsedMillis >= timeBeforeLogging;
     }
 
@@ -121,7 +122,7 @@ public class TrackingHelper {
         return new DbCallback() {
             @Override
             public void onOperationSuccess(Object result) {
-                Toast.makeText(context, "Activity logged successfully", Toast.LENGTH_SHORT).show();
+                Utility.makeToast(context, "Activity logged successfully");
             }
 
             @Override
