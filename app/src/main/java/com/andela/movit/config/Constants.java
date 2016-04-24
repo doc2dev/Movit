@@ -2,13 +2,13 @@ package com.andela.movit.config;
 
 public enum Constants {
     PLACE_NAME("PLACE"),
-    ACTIVITY_NAME("ACTIVITY"),
+    ACTIVITY_NAME("com.andela.intent.action.ACTIVITY"),
     LATITUDE("LAT"),
     LONGITUDE("LNG"),
-    TIMESTAMP("STAMP"),
-    ELAPSED("ELAPSED"),
-    SERVICE_NAME("ActivityRecognitionService"),
-    ACTIVITY_ACTION("com.andela.intent.action.BROADCAST_ACTION");
+    LOCATION("com.andela.intent.action.LOCATION"),
+    TIMESTAMP("com.andela.intent.action.STAMP"),
+    STATEMENT("com.andela.intent.action.STMT"),
+    SERVICE_NAME("ActivityRecognitionService");
 
     private final String value;
 
