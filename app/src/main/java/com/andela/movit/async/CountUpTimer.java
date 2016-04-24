@@ -7,15 +7,11 @@ public class CountUpTimer {
 
     private TimerTickListener listener;
 
-    private long baseTime;
+    private long baseTime = 0;
 
     private Timer timer;
 
     private boolean active;
-
-    public void setBaseTime(long baseTime) {
-        this.baseTime = baseTime;
-    }
 
     public void setListener(TimerTickListener listener) {
         this.listener = listener;
