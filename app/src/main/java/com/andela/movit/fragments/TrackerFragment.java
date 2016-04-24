@@ -2,8 +2,15 @@ package com.andela.movit.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.SystemClock;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +23,16 @@ import com.andela.movit.Movit;
 import com.andela.movit.R;
 import com.andela.movit.activities.SplashActivity;
 import com.andela.movit.async.TrackingService;
-import com.andela.movit.listeners.ActivityCallback;
+import com.andela.movit.listeners.IncomingStringCallback;
 import com.andela.movit.listeners.LocationCallback;
 import com.andela.movit.models.Movement;
-import com.andela.movit.utilities.PreferenceHelper;
-import com.andela.movit.utilities.TrackingHelper;
+import com.andela.movit.receivers.LocationBroadcastReceiver;
+import com.andela.movit.receivers.StringBroadcastReceiver;
 import com.andela.movit.utilities.Utility;
 
 import pl.droidsonroids.gif.GifImageView;
+
+import static com.andela.movit.config.Constants.*;
 
 public class TrackerFragment extends Fragment {
 
@@ -47,13 +56,17 @@ public class TrackerFragment extends Fragment {
 
     private Bundle bundle;
 
-    private Chronometer counter;
-
     private String currentActivity = "Unknown";
+
+    private Chronometer counter;
 
     private Movement movement;
 
-    private TrackingHelper trackingHelper;
+    private TrackingService trackingService;
+
+    private StringBroadcastReceiver statementReceiver;
+
+    private LocationBroadcastReceiver locationReceiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,44 +82,53 @@ public class TrackerFragment extends Fragment {
         start(bundle);
     }
 
-    private void resume() {
-        Utility.stopService(context, TrackingService.class);
-        Movit.getApp().setTrackingServiceRunning(false);
-        movement = Movit.getApp().getMovement();
-        resumeTracking();
-    }
-
     private void start(Bundle bundle) {
-
-        if (Movit.getApp().isTrackingServiceRunning()) {
-            resume();
-        } else {
-            if (bundle == null) {
-                Utility.launchActivity(context, SplashActivity.class);
-                context.finish();
-            } else  {
-                Movit.getApp().setIdle(true);
-                this.bundle = bundle;
-                movement = Utility.getMovementFromBundle(bundle);
-                init();
-            }
-        }
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (Movit.getApp().isTrackingServiceRunning()) {
-            resume();
+        if (bundle == null) {
+            Utility.launchActivity(context, SplashActivity.class);
+            context.finish();
+        } else  {
+            Movit.getApp().setIdle(true);
+            this.bundle = bundle;
+            movement = Utility.getMovementFromBundle(bundle);
+            init();
         }
     }
 
     private void init() {
-        initializeComponents();
-        initializeVariables();
+        initializeViews();
         displayLocation(movement);
         setTrackClickListener();
+        bindTrackingService();
+    }
+
+    private void bindTrackingService() {
+        trackingService = Movit.getApp().getTrackingService();
+        if (trackingService == null) {
+            bindNewInstance();
+        } else {
+            continueTracking();
+        }
+    }
+
+    private void bindNewInstance() {
+        Intent intent = new Intent(context, TrackingService.class);
+        intent = Utility.putMovementInIntent(movement, intent);
+        context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    private void continueTracking() {
+        long elapsedTime = trackingService.getTimeElapsed();
+        if (trackingService.isTracking() && elapsedTime > 0) {
+            registerReceivers();
+            toggleViews(true);
+            startCounterFrom(elapsedTime);
+            displayActivity(trackingService.getCurrentActivity());
+        }
+    }
+
+    private void startCounterFrom(long elapsedTime) {
+        counter.setBase(SystemClock.elapsedRealtime() - elapsedTime);
+        counter.start();
     }
 
     private void setTrackClickListener() {
@@ -119,7 +141,7 @@ public class TrackerFragment extends Fragment {
     }
 
     private void toggleTracking() {
-        if (trackingHelper.isActive()) {
+        if (trackingService.isTracking()) {
             stopTracking();
         } else {
             startTracking();
@@ -127,34 +149,68 @@ public class TrackerFragment extends Fragment {
     }
 
     private void stopTracking() {
-        stopCounter();
-        trackingHelper.stopTracking();
-        trackButton.setText(R.string.label_start_tracking);
-        notifyContainer.setVisibility(View.INVISIBLE);
-        toggleGiphy(false);
+        trackingService.stopTracking();
+        unregisterReceivers();
+        toggleViews(false);
+        counter.stop();
     }
 
     private void startTracking() {
-        restartCounter(SystemClock.elapsedRealtime());
-        trackingHelper.startTracking();
-        trackButton.setText(R.string.label_stop_tracking);
-        notifyContainer.setVisibility(View.VISIBLE);
-        toggleGiphy(true);
+        trackingService.startTracking();
+        registerReceivers();
+        toggleViews(true);
+        restartCounter();
     }
 
-    private void resumeTracking() {
-        init();
-        restartCounter(Utility.calculateResumeTime(movement.getTimeStamp()));
-        trackingHelper.setMovement(movement);
-        currentActivity = movement.getActivityName();
-        trackingHelper.setCurrentActivity(currentActivity);
-        displayActivity(trackingHelper.getActivityStatement(currentActivity));
-        trackingHelper.startTracking();
-        trackButton.setText(R.string.label_stop_tracking);
-        notifyContainer.setVisibility(View.VISIBLE);
-        toggleGiphy(true);
+    private void unregisterReceivers() {
+        Utility.unregisterReceiver(context, locationReceiver);
+        Utility.unregisterReceiver(context, statementReceiver);
     }
 
+    private void restartCounter() {
+        counter.setBase(SystemClock.elapsedRealtime());
+        counter.start();
+    }
+
+    private void toggleViews(boolean isTracking) {
+        if (isTracking) {
+            notifyContainer.setVisibility(View.VISIBLE);
+            trackButton.setText(R.string.label_stop_tracking);
+            toggleGiphy(true);
+        } else {
+            notifyContainer.setVisibility(View.INVISIBLE);
+            trackButton.setText(R.string.label_start_tracking);
+            toggleGiphy(false);
+        }
+    }
+
+    private void registerReceivers() {
+        statementReceiver = Utility.registerStringReceiver(context, STATEMENT.getValue());
+        statementReceiver.setIncomingStringCallback(statementCallback);
+        registerLocationReceiver();
+    }
+
+    private void registerLocationReceiver() {
+        locationReceiver = new LocationBroadcastReceiver(locationCallback);
+        IntentFilter filter = new IntentFilter(LOCATION.getValue());
+        LocalBroadcastManager.getInstance(context).registerReceiver(locationReceiver, filter);
+    }
+
+    private LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationDetected(Movement mv) {
+            movement = mv;
+            displayLocation(mv);
+        }
+    };
+
+    private IncomingStringCallback statementCallback = new IncomingStringCallback() {
+        @Override
+        public void onStringArrive(String activityStatement) {
+            displayActivity(activityStatement);
+            Movit.getApp().setIdle(true);
+        }
+    };
 
     private void toggleGiphy(boolean isTracking) {
         if (isTracking) {
@@ -169,27 +225,6 @@ public class TrackerFragment extends Fragment {
     private void displayLocation(Movement mv) {
         locationName.setText(mv.getPlaceName());
         locationCoords.setText(Utility.getCoordsString(mv));
-        trackingHelper.setMovement(mv);
-    }
-
-    private void initializeComponents() {
-        initializeVariables();
-        initializeViews();
-    }
-
-    @Override
-    public void onPause() {
-        if (trackingHelper.isActive()) {
-            moveTrackingToService();
-        }
-        super.onPause();
-    }
-
-    private void moveTrackingToService() {
-        movement.setActivityName(currentActivity);
-        movement.setTimeStamp(counter.getBase());
-        Utility.launchService(context, TrackingService.class, movement);
-        Movit.getApp().setTrackerActive(true);
     }
 
     private void initializeViews() {
@@ -201,62 +236,24 @@ public class TrackerFragment extends Fragment {
         lockStatic = (ImageView) rootView.findViewById(R.id.lock_static);
         lockAnim = (GifImageView) rootView.findViewById(R.id.lock_gif);
         counter = (Chronometer) rootView.findViewById(R.id.counter);
-        counter.setOnChronometerTickListener(getTickListener());
-    }
-
-    private void initializeVariables() {
-        trackingHelper = new TrackingHelper(context);
-        trackingHelper.setLocationCallback(getLocationCallback());
-        trackingHelper.setActivityCallback(getActivityCallback());
-        trackingHelper.setTimeBeforeLogging(PreferenceHelper.getTimeBeforeLogging());
-    }
-
-    private void restartCounter(long baseTime) {
-        counter.setBase(baseTime);
-        counter.start();
-    }
-
-    private void stopCounter() {
-        counter.stop();
     }
 
     private void displayActivity(String activity) {
-        activityNameView.setText(activity);
+        if (!currentActivity.equals(activity)) {
+            activityNameView.setText(activity);
+            restartCounter();
+        }
     }
 
-    private LocationCallback getLocationCallback() {
-        return new LocationCallback() {
-            @Override
-            public void onLocationDetected(Movement mv) {
-                displayLocation(mv);
-            }
-        };
-    }
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            trackingService = ((TrackingService.TrackingBinder)service).getService();
+            Movit.getApp().setTrackingService(trackingService);
+        }
 
-    private ActivityCallback getActivityCallback() {
-        return new ActivityCallback() {
-            @Override
-            public void onActivityDetected(String activityName) {
-                if (trackingHelper.hasActivityChanged(activityName)) {
-                    restartCounter(SystemClock.elapsedRealtime());
-                    currentActivity = activityName;
-                    trackingHelper.setCurrentActivity(currentActivity);
-                    displayActivity(trackingHelper.getActivityStatement(activityName));
-                    Movit.getApp().setIdle(true);
-                }
-            }
-        };
-    }
-
-    public Chronometer.OnChronometerTickListener getTickListener() {
-        return new Chronometer.OnChronometerTickListener() {
-            @Override
-            public void onChronometerTick(Chronometer chronometer) {
-                if (trackingHelper.hasTimeElapsed(chronometer.getBase())
-                        && !trackingHelper.isCurrentActivityLogged()) {
-                    trackingHelper.logCurrentActivity(currentActivity);
-                }
-            }
-        };
-    }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
 }
