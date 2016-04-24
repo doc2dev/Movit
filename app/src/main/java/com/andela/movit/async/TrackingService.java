@@ -1,19 +1,14 @@
 package com.andela.movit.async;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 
-import com.andela.movit.Movit;
-import com.andela.movit.R;
-import com.andela.movit.activities.TrackerActivity;
-import com.andela.movit.listeners.ActivityCallback;
+import com.andela.movit.config.Constants;
+import com.andela.movit.listeners.IncomingStringCallback;
 import com.andela.movit.listeners.LocationCallback;
 import com.andela.movit.models.Movement;
 import com.andela.movit.utilities.PreferenceHelper;
@@ -24,42 +19,39 @@ public class TrackingService extends Service {
 
     private Movement movement;
 
-    private String currentActivity;
+    private String currentActivity = "Unknown";
 
     private TrackingHelper trackingHelper;
 
-    private  CountUpTimer countUpTimer;
+    private CountUpTimer counter;
 
-    private long baseTime;
+    private TrackingBinder trackingBinder;
 
-    public TrackingService() {
-    }
+    private long timeElapsed;
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        init(intent);
-        startTracking();
-        Movit.getApp().setTrackingServiceRunning(true);
-        notifyActivity();
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    private void startTracking() {
-        countUpTimer.setBaseTime(movement.getTimeStamp());
-        countUpTimer.start();
+    public void startTracking() {
+        prepareHelper();
+        restartCounter();
         trackingHelper.startTracking();
+    }
+
+    public void stopTracking() {
+        trackingHelper.stopTracking();
+        counter.stop();
+    }
+
+    private void restartCounter() {
+        counter.stop();
+        counter.start();
     }
 
     private void init(Intent intent) {
         movement = Utility.getMovementFromBundle(intent.getExtras());
         currentActivity = movement.getActivityName();
-        trackingHelper = new TrackingHelper(this);
-        trackingHelper.setMovement(movement);
-        trackingHelper.setLocationCallback(getLocationCallback());
-        trackingHelper.setActivityCallback(getActivityCallback());
-        trackingHelper.setTimeBeforeLogging(PreferenceHelper.getTimeBeforeLogging());
-        countUpTimer = new CountUpTimer();
-        countUpTimer.setListener(getTickListener());
+        counter = new CountUpTimer();
+        counter.setListener(getTickListener());
+        trackingBinder = new TrackingBinder();
+        prepareHelper();
     }
 
     private TimerTickListener getTickListener() {
@@ -70,33 +62,30 @@ public class TrackingService extends Service {
                         && !trackingHelper.isCurrentActivityLogged()) {
                     trackingHelper.logCurrentActivity(currentActivity);
                 }
-                baseTime = elapsedTime;
-                storeCurrentMovement();
+                timeElapsed = elapsedTime;
             }
         };
     }
 
-    private void storeCurrentMovement() {
-        movement.setActivityName(currentActivity);
-        movement.setTimeStamp(baseTime);
-        Movit.getApp().setMovement(movement);
+    private void prepareHelper() {
+        trackingHelper = new TrackingHelper(this);
+        trackingHelper.setMovement(movement);
+        trackingHelper.setCurrentActivityLogged(true);
+        trackingHelper.setLocationCallback(getLocationCallback());
+        trackingHelper.setActivityCallback(getActivityCallback());
+        trackingHelper.setTimeBeforeLogging(PreferenceHelper.getTimeBeforeLogging());
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        init(intent);
+        return trackingBinder;
     }
 
     @Override
     public void onDestroy() {
         stopTracking();
-        Movit.getApp().setTrackingServiceRunning(false);
-    }
-
-    private void stopTracking() {
-        trackingHelper.stopTracking();
-        countUpTimer.stop();
     }
 
     private LocationCallback getLocationCallback() {
@@ -105,53 +94,54 @@ public class TrackingService extends Service {
             public void onLocationDetected(Movement mv) {
                 movement = mv;
                 trackingHelper.setMovement(mv);
+                broadcastLocation(mv);
             }
         };
     }
 
-    private ActivityCallback getActivityCallback() {
-        return new ActivityCallback() {
+    private void broadcastLocation(Movement movement) {
+        Intent intent  = new Intent(Constants.LOCATION.getValue());
+        intent = Utility.putMovementInIntent(movement, intent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private IncomingStringCallback getActivityCallback() {
+        return new IncomingStringCallback() {
             @Override
-            public void onActivityDetected(String activityName) {
+            public void onStringArrive(String activityName) {
                 if (trackingHelper.hasActivityChanged(activityName)) {
                     restartCounter();
                     currentActivity = activityName;
                     trackingHelper.setCurrentActivity(currentActivity);
-                    notifyActivity();
+                    broadcastActivityStatement();
                 }
             }
         };
     }
 
-    private void notifyActivity() {
-        Notification notification = getNotification();
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
+    private void broadcastActivityStatement() {
+        Intent broadcastIntent = new Intent(Constants.STATEMENT.getValue());
+        broadcastIntent.putExtra(
+                Constants.STATEMENT.getValue(),
+                trackingHelper.getActivityStatement(currentActivity));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
-    private Notification getNotification() {
-        return new Notification.Builder(this)
-                .setContentTitle("Tracking in Progress")
-                .setContentInfo(getStatement(currentActivity))
-                .setContentIntent(getIntent())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setAutoCancel(true)
-                .build();
+    public boolean isTracking() {
+        return trackingHelper.isActive();
     }
 
-    private PendingIntent getIntent() {
-        Intent intent = new Intent(this, TrackerActivity.class);
-        return PendingIntent.getActivity(this, 1000, intent, 0);
+    public long getTimeElapsed() {
+        return timeElapsed;
     }
 
-    private String getStatement(String currentActivity) {
-        return "You are currently " + currentActivity + ".";
+    public String getCurrentActivity() {
+        return currentActivity;
     }
 
-    private void restartCounter() {
-        countUpTimer.stop();
-        countUpTimer.setBaseTime(SystemClock.elapsedRealtime());
-        countUpTimer.start();
+    public class TrackingBinder extends Binder {
+        public TrackingService getService() {
+            return TrackingService.this;
+        }
     }
 }
