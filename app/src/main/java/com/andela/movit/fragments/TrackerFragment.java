@@ -54,8 +54,6 @@ public class TrackerFragment extends Fragment {
 
     private Button trackButton;
 
-    private Bundle bundle;
-
     private String currentActivity = "Unknown";
 
     private Chronometer counter;
@@ -88,7 +86,6 @@ public class TrackerFragment extends Fragment {
             context.finish();
         } else  {
             Movit.getApp().setIdle(true);
-            this.bundle = bundle;
             movement = Utility.getMovementFromBundle(bundle);
             init();
         }

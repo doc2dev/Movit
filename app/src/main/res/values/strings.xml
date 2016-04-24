@@ -12,4 +12,5 @@
     <string name="label_activity_duration">0 days, 0 hours, 0 minutes, 0 seconds</string>
     <string name="label_start_tracking">Start tracking</string>
     <string name="label_stop_tracking">stop tracking</string>
+    <string name="title_activity_movements">MovementsActivity</string>
 </resources>

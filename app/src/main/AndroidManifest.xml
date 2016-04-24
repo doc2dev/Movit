@@ -27,13 +27,18 @@
         <activity
             android:name=".activities.SplashActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".activityrecognition.ActivityRecognitionService" />
         <service
             android:name=".async.TrackingService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity
+            android:name=".activities.MovementsActivity"
+            android:label="@string/title_activity_movements"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
