@@ -11,7 +11,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.andela.movit.config.Constants;
-import com.andela.movit.listeners.ActivityCallback;
+import com.andela.movit.listeners.IncomingStringCallback;
+import com.andela.movit.receivers.StringBroadcastReceiver;
+import com.andela.movit.utilities.Utility;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -23,9 +25,9 @@ public class RecognitionHelper implements
         GoogleApiClient.OnConnectionFailedListener,
         ResultCallback<Status> {
 
-    private ActivityCallback activityCallback;
+    private IncomingStringCallback activityCallback;
 
-    private ActivityBroadcastReceiver activityBroadcastReceiver;
+    private StringBroadcastReceiver activityBroadcastReceiver;
 
     private Context context;
 
@@ -35,11 +37,10 @@ public class RecognitionHelper implements
 
     public RecognitionHelper(Context context) {
         this.context = context;
-        activityBroadcastReceiver = new ActivityBroadcastReceiver();
         buildApiClient();
     }
 
-    public void setActivityCallback(ActivityCallback activityCallback) {
+    public void setActivityCallback(IncomingStringCallback activityCallback) {
         this.activityCallback = activityCallback;
     }
 
@@ -49,13 +50,15 @@ public class RecognitionHelper implements
     }
 
     public void disconnect() {
-        unregisterReceiver();
-        stopActivityRecognition();
-        apiClient.disconnect();
+        if (apiClient.isConnected()) {
+            unregisterReceiver();
+            stopActivityRecognition();
+            apiClient.disconnect();
+        }
     }
 
     private void unregisterReceiver() {
-        LocalBroadcastManager.getInstance(context).unregisterReceiver(activityBroadcastReceiver);
+        Utility.unregisterReceiver(context, activityBroadcastReceiver);
     }
 
     private void buildApiClient() {
@@ -67,14 +70,16 @@ public class RecognitionHelper implements
     }
 
     private void registerReceiver() {
-        activityBroadcastReceiver.setActivityCallback(activityCallback);
+        activityBroadcastReceiver = Utility.registerStringReceiver(
+                context, Constants.ACTIVITY_NAME.getValue());
+        activityBroadcastReceiver.setIncomingStringCallback(activityCallback);
         LocalBroadcastManager
                 .getInstance(context)
                 .registerReceiver(activityBroadcastReceiver, getFilter());
     }
 
     private IntentFilter getFilter() {
-        return new IntentFilter(Constants.ACTIVITY_ACTION.getValue());
+        return new IntentFilter(Constants.ACTIVITY_NAME.getValue());
     }
 
     @Override

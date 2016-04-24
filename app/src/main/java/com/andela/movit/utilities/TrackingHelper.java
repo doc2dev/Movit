@@ -1,11 +1,7 @@
 package com.andela.movit.utilities;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Chronometer;
-import android.widget.Toast;
 
 import com.andela.movit.R;
 import com.andela.movit.activityrecognition.RecognitionHelper;
@@ -14,7 +10,7 @@ import com.andela.movit.data.DbCallback;
 import com.andela.movit.data.DbOperation;
 import com.andela.movit.data.DbResult;
 import com.andela.movit.data.MovementRepo;
-import com.andela.movit.listeners.ActivityCallback;
+import com.andela.movit.listeners.IncomingStringCallback;
 import com.andela.movit.listeners.LocationCallback;
 import com.andela.movit.location.LocationHelper;
 import com.andela.movit.models.Movement;
@@ -31,11 +27,11 @@ public class TrackingHelper {
 
     private boolean isActive;
 
-    private String currentActivity;
+    private String currentActivity = "Unknown";
 
     private long timeBeforeLogging;
 
-    private boolean isCurrentActivityLogged;
+    private boolean isCurrentActivityLogged = false;
 
     public boolean isCurrentActivityLogged() {
         return isCurrentActivityLogged;
@@ -59,7 +55,7 @@ public class TrackingHelper {
         this.timeBeforeLogging = timeBeforeLogging;
     }
 
-    public void setActivityCallback(ActivityCallback activityCallback) {
+    public void setActivityCallback(IncomingStringCallback activityCallback) {
         recognitionHelper.setActivityCallback(activityCallback);
     }
 
@@ -91,6 +87,10 @@ public class TrackingHelper {
         dbAsync.execute(getInsertOperation(movement));
     }
 
+    public void setCurrentActivityLogged(boolean currentActivityLogged) {
+        isCurrentActivityLogged = currentActivityLogged;
+    }
+
     public void startTracking() {
         locationHelper.connect();
         recognitionHelper.connect();
@@ -101,15 +101,13 @@ public class TrackingHelper {
         locationHelper.disconnect();
         recognitionHelper.disconnect();
         isActive = false;
-        isCurrentActivityLogged = false;
     }
 
     public boolean isActive() {
         return isActive;
     }
 
-    public boolean hasTimeElapsed(Chronometer chronometer) {
-        long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
+    public boolean hasTimeElapsed(long elapsedMillis) {
         return elapsedMillis >= timeBeforeLogging;
     }
 
@@ -121,7 +119,7 @@ public class TrackingHelper {
         return new DbCallback() {
             @Override
             public void onOperationSuccess(Object result) {
-                Toast.makeText(context, "Activity logged successfully", Toast.LENGTH_SHORT).show();
+                Utility.makeToast(context, "Activity logged successfully");
             }
 
             @Override

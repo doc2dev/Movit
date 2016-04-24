@@ -1,25 +1,21 @@
 package com.andela.movit.location;
 
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
 
-import com.andela.movit.listeners.PlaceNameCallback;
+import com.andela.movit.listeners.IncomingStringCallback;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
-import java.util.List;
-
 public class GeoHelper {
     private Context context;
 
-    private PlaceNameCallback callback;
+    private IncomingStringCallback callback;
 
     private final String URL_BASE
             = "http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=";
 
-    public void setCallback(PlaceNameCallback callback) {
+    public void setCallback(IncomingStringCallback callback) {
         this.callback = callback;
     }
 
@@ -46,7 +42,7 @@ public class GeoHelper {
             public void onCompleted(Exception e, JsonObject result) {
                 if (e == null) {
                     String formattedAddress = extractAddress(result);
-                    callback.onPlaceNameFound(formattedAddress);
+                    callback.onStringArrive(formattedAddress);
                 }
             }
         };

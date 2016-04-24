@@ -59,7 +59,7 @@ public class ActivityRecognitionService extends IntentService {
     }
 
     private void broadcastActivityName(String activityName) {
-        Intent broadcastIntent = new Intent(Constants.ACTIVITY_ACTION.getValue());
+        Intent broadcastIntent = new Intent(Constants.ACTIVITY_NAME.getValue());
         broadcastIntent.putExtra(Constants.ACTIVITY_NAME.getValue(), activityName);
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
