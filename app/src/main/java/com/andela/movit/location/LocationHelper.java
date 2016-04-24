@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.andela.movit.listeners.LocationCallback;
-import com.andela.movit.listeners.PlaceNameCallback;
+import com.andela.movit.listeners.IncomingStringCallback;
 import com.andela.movit.models.Movement;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -110,10 +110,10 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks,
         helper.getPlaceName(movement.getLatitude(), movement.getLongitude());
     }
 
-    private PlaceNameCallback getPlaceNameCallback(final Movement movement) {
-        return new PlaceNameCallback() {
+    private IncomingStringCallback getPlaceNameCallback(final Movement movement) {
+        return new IncomingStringCallback() {
             @Override
-            public void onPlaceNameFound(String placeName) {
+            public void onStringArrive(String placeName) {
                 movement.setPlaceName(placeName);
                 locationCallback.onLocationDetected(movement);
             }
