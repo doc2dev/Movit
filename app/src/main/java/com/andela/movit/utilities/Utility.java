@@ -1,15 +1,20 @@
 package com.andela.movit.utilities;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 
 import com.andela.movit.Movit;
 import com.andela.movit.models.Movement;
+import com.andela.movit.receivers.LocationBroadcastReceiver;
+import com.andela.movit.receivers.StringBroadcastReceiver;
 
 import static com.andela.movit.config.Constants.*;
 
@@ -35,16 +40,16 @@ public class Utility {
     }
 
     public static void launchService(
-            Context context, Class serviceClass, Movement movement) {
+            Context context, Class serviceClass) {
         Intent intent = new Intent(context, serviceClass);
-        context.startService(putMovementInIntent(movement, intent));
+        context.startService(intent);
     }
 
     public static void stopService(Context context, Class serviceClass) {
         context.stopService(new Intent(context, serviceClass));
     }
 
-    private static Intent putMovementInIntent(Movement movement, Intent intent) {
+    public static Intent putMovementInIntent(Movement movement, Intent intent) {
         intent.putExtra(PLACE_NAME.getValue(), movement.getPlaceName());
         intent.putExtra(ACTIVITY_NAME.getValue(), movement.getActivityName());
         intent.putExtra(LATITUDE.getValue(), Double.toString(movement.getLatitude()));
@@ -73,7 +78,19 @@ public class Utility {
                 + Double.toString(movement.getLongitude());
     }
 
-    public static long calculateResumeTime(long elspasedTime) {
-        return (elspasedTime - SystemClock.elapsedRealtime()) + SystemClock.elapsedRealtime();
+    public static StringBroadcastReceiver registerStringReceiver(Context context, String actionName) {
+        StringBroadcastReceiver receiver = new StringBroadcastReceiver(actionName);
+        LocalBroadcastManager
+                .getInstance(context)
+                .registerReceiver(receiver, getFilter(actionName));
+        return receiver;
+    }
+
+    private static IntentFilter getFilter(String actionName) {
+        return new IntentFilter(actionName);
+    }
+
+    public static void unregisterReceiver(Context context, BroadcastReceiver receiver) {
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
     }
 }
