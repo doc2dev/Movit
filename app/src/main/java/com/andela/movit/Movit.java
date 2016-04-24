@@ -13,19 +13,7 @@ public class Movit extends Application implements IdlingResource {
 
     protected IdlingResource.ResourceCallback resourceCallback;
 
-    private boolean isTrackingServiceRunning;
-
-    private Movement movement;
-
-    private boolean trackerActive;
-
-    public boolean isTrackerActive() {
-        return trackerActive;
-    }
-
-    public void setTrackerActive(boolean trackerActive) {
-        this.trackerActive = trackerActive;
-    }
+    private TrackingService trackingService;
 
     private static Movit app;
 
@@ -33,18 +21,19 @@ public class Movit extends Application implements IdlingResource {
     public void onCreate() {
         super.onCreate();
         Movit.app = (Movit)getApplicationContext();
+        Utility.launchService(this, TrackingService.class);
+    }
+
+    public TrackingService getTrackingService() {
+        return trackingService;
+    }
+
+    public void setTrackingService(TrackingService trackingService) {
+        this.trackingService = trackingService;
     }
 
     public static Movit getApp() {
         return app;
-    }
-
-    public Movement getMovement() {
-        return movement;
-    }
-
-    public void setMovement(Movement movement) {
-        this.movement = movement;
     }
 
     @Override
@@ -69,17 +58,15 @@ public class Movit extends Application implements IdlingResource {
         this.resourceCallback = callback;
     }
 
-    public boolean isTrackingServiceRunning() {
-        return isTrackingServiceRunning;
-    }
-
-    public void setTrackingServiceRunning(boolean trackingServiceRunning) {
-        isTrackingServiceRunning = trackingServiceRunning;
-    }
-
     @Override
     public void onTerminate() {
-        Utility.stopService(this, TrackingService.class);
+        if (trackingService != null && !trackingService.isTracking()) {
+            Utility.stopService(this, TrackingService.class);
+        }
         super.onTerminate();
+    }
+
+    public Movit() {
+        super();
     }
 }
