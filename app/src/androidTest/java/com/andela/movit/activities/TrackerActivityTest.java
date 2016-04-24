@@ -31,7 +31,7 @@ public class TrackerActivityTest {
         Movit app = Movit.getApp();
         app.setIdle(false);
         Espresso.registerIdlingResources(app);
-        onView(withId(R.id.track_button)).perform(click());
+        onView(withId(R.id.trackButton)).perform(click());
         onView(withId(R.id.activity_name))
                 .check(matches(withText("Waiting for activity recognition...")));
         app.setIdle(false);
