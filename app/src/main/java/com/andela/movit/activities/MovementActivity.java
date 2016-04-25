@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.andela.movit.R;
 
-public class MovementsActivity extends AppCompatActivity {
+public class MovementActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

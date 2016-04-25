@@ -1,4 +1,4 @@
-package com.andela.movit.activities;
+package com.andela.movit.fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -11,9 +11,9 @@ import com.andela.movit.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MovementsActivityFragment extends Fragment {
+public class MovementFragment extends Fragment {
 
-    public MovementsActivityFragment() {
+    public MovementFragment() {
     }
 
     @Override
