@@ -10,7 +10,6 @@ import com.andela.movit.models.Movement;
 import com.andela.movit.utilities.Utility;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +48,8 @@ public class MovementRepo extends SQLiteOpenHelper {
             + TIMESTAMP + " < bar "
             + "ORDER BY " + TIMESTAMP + " DESC;";
 
+    private SQLiteDatabase db;
+
     public MovementRepo(Context context) {
         super(context, DATABASE, null, VERSION);
     }
@@ -62,15 +63,27 @@ public class MovementRepo extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
+    private void initializeDatabase() {
+        if (db == null) {
+            db = this.getWritableDatabase();
+        }
+    }
+
+    public void closeDatabase() {
+        if (db != null && db.isOpen()) {
+            db.close();
+        }
+    }
+
     public long addMovement(Movement movement) {
-        SQLiteDatabase db = getWritableDatabase();
+        initializeDatabase();
         ContentValues values = getWriteContents(movement);
         long newRowId = db.insert(TABLE, null, values);
         return newRowId;
     }
 
     public List<Movement> getMovementsByDate(Date date) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        initializeDatabase();
         String[] ranges = getDateRanges(date);
         String query = GET_BY_DATE.replace("foo", ranges[0]).replace("bar", ranges[1]);
         Cursor cursor = db.rawQuery(query, null);
@@ -108,11 +121,12 @@ public class MovementRepo extends SQLiteOpenHelper {
         int year = dateValues[0];
         int month = dateValues[1];
         int day = dateValues[2];
-        Date date2 = Utility.generateDate(year, month, day - 1);
-        return new String[] {dateAsLongString(date2), dateAsLongString(date)};
+        Date date1 = Utility.generateDate(year, month, day);
+        Date date2 = Utility.generateDate(year, month, day + 1);
+        return new String[] {getDateAsLongString(date1), getDateAsLongString(date2)};
     }
 
-    private String dateAsLongString(Date date) {
+    private String getDateAsLongString(Date date) {
         return Long.toString(date.getTime());
     }
 
