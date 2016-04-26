@@ -44,6 +44,7 @@ public class TrackingService extends InfiniteService {
 
     private void restartCounter() {
         counter.stop();
+        counter.reset();
         counter.start();
     }
 
@@ -133,8 +134,8 @@ public class TrackingService extends InfiniteService {
                     restartCounter();
                     currentActivity = activityName;
                     trackingHelper.setCurrentActivity(currentActivity);
-                    broadcastActivityStatement();
                 }
+                broadcastActivityStatement();
             }
         };
     }
