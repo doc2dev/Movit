@@ -50,7 +50,7 @@ public class ActivityRecognitionService extends IntentService {
         return new Comparator<DetectedActivity>() {
             @Override
             public int compare(DetectedActivity lhs, DetectedActivity rhs) {
-                if (lhs.getConfidence() > rhs.getConfidence()) {
+                if (rhs.getConfidence() > lhs.getConfidence()) {
                     return 1;
                 }
                 return 0;
