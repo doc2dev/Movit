@@ -5,9 +5,20 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.andela.movit.activities.MovementsActivityFragment"
+    tools:context=".fragments.MovementFragment"
     tools:showIn="@layout/activity_movements">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No movements for this day"
+        android:id="@+id/no_movement"
+        android:layout_centerInParent="true"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/list_movements"/>
 
 </RelativeLayout>

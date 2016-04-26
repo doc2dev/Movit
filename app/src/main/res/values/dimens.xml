@@ -12,5 +12,7 @@
     <dimen name="dimen_32">32dp</dimen>
     <dimen name="dimen_4">4dp</dimen>
     <dimen name="font_24">24sp</dimen>
+    <dimen name="font_12">12sp</dimen>
     <dimen name="dimen_24">24dp</dimen>
+    <dimen name="dimen_mov_icon">48dp</dimen>
 </resources>

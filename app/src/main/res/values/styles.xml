@@ -6,9 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/font_20</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -24,6 +25,10 @@
 
     <style name="TrackButton">
         <item name="colorButtonNormal">@color/colorTrack</item>
+    </style>
+
+    <style name="Alt" parent="AppTheme">
+        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
     </style>
 
 </resources>
