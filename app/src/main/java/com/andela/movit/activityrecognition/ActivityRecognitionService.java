@@ -75,7 +75,7 @@ public class ActivityRecognitionService extends IntentService {
             case ON_BICYCLE:
                 return "Cycling";
             case ON_FOOT:
-                return "On Foot";
+                return "Walking";
             case RUNNING:
                 return "Running";
             case STILL:
