@@ -58,7 +58,7 @@ public class MovementRepoTest {
 
     @Test
     public void testGetByDate() {
-        List<Movement> movements = repo.getMovementsByDate(new Date(2016, 4, 24));
+        List<Movement> movements = repo.getMovementsByDate(new Date());
         assertTrue(movements.size() > 0);
     }
 

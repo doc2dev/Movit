@@ -79,10 +79,10 @@ public class TrackerFragment extends Fragment {
             initializeComponents();
             movement = app.getInitialLocation();
             displayLocation(movement);
-            app.setIdle(true);
         } else {
             launchSplash();
         }
+        app.setIdle(true);
     }
 
     private void launchSplash() {

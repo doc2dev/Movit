@@ -21,7 +21,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class TrackerActivityTest {
-
     @Rule
     public ActivityTestRule<TrackerActivity> rule
             = new ActivityTestRule<>(TrackerActivity.class);
