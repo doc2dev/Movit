@@ -9,4 +9,5 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorDivider">#B6B6B6</color>
     <color name="colorTrack">#9575CD</color>
+    <color name="drawerHeader">#F6F6F8</color>
 </resources>

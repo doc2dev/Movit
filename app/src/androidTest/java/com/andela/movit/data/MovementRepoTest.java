@@ -14,6 +14,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Date;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 import static com.andela.movit.data.MovementRepo.*;
@@ -35,11 +38,8 @@ public class MovementRepoTest {
     public void testWriteToDb() throws Exception {
         long newRowId = repo.addMovement(getTestMovement());
         assertTrue(newRowId > 0);
-
         String[] projection = {ACT_NAME};
-
         String selection = ACT_NAME + " LIKE ?";
-
         String[] selectionArgs = {"Idling"};
         Cursor cursor = movementDb.query(
                 TABLE,
@@ -50,14 +50,22 @@ public class MovementRepoTest {
                 null,
                 null
         );
-
         assertTrue(cursor.moveToNext());
-
         String activityName = cursor.getString(0);
-
         assertEquals("Idling", activityName);
-
         cursor.close();
+    }
+
+    @Test
+    public void testGetByDate() {
+        List<Movement> movements = repo.getMovementsByDate(new Date(2016, 4, 24));
+        assertTrue(movements.size() > 0);
+    }
+
+    @Test
+    public void testGetAll() {
+        List<Movement> movements = repo.getAll();
+        assertTrue(movements.size() > 0);
     }
 
     private Movement getTestMovement() {

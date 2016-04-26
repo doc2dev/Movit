@@ -1,12 +1,9 @@
-package com.andela.movit.async;
+package com.andela.movit.background;
 
-import android.app.Service;
 import android.content.Intent;
-import android.os.Binder;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.andela.movit.Movit;
 import com.andela.movit.config.Constants;
 import com.andela.movit.listeners.IncomingStringCallback;
 import com.andela.movit.listeners.LocationCallback;
@@ -15,7 +12,7 @@ import com.andela.movit.utilities.PreferenceHelper;
 import com.andela.movit.utilities.TrackingHelper;
 import com.andela.movit.utilities.Utility;
 
-public class TrackingService extends Service {
+public class TrackingService extends InfiniteService {
 
     private Movement movement;
 
@@ -25,32 +22,39 @@ public class TrackingService extends Service {
 
     private CountUpTimer counter;
 
-    private TrackingBinder trackingBinder;
-
     private long timeElapsed;
+
+    public TrackingService() {
+        super("TrackingService");
+        init();
+    }
 
     public void startTracking() {
         prepareHelper();
         restartCounter();
         trackingHelper.startTracking();
+        Movit.getApp().setTracking(true);
     }
 
     public void stopTracking() {
         trackingHelper.stopTracking();
         counter.stop();
+        Movit.getApp().setTracking(false);
     }
 
     private void restartCounter() {
         counter.stop();
+        counter.reset();
         counter.start();
     }
 
-    private void init(Intent intent) {
-        movement = Utility.getMovementFromBundle(intent.getExtras());
-        currentActivity = movement.getActivityName();
+    private void init() {
+        movement = Movit.getApp().getInitialLocation();
+        if (movement != null) {
+            currentActivity = movement.getActivityName();
+        }
         counter = new CountUpTimer();
         counter.setListener(getTickListener());
-        trackingBinder = new TrackingBinder();
         prepareHelper();
     }
 
@@ -63,12 +67,13 @@ public class TrackingService extends Service {
                     trackingHelper.logCurrentActivity(currentActivity);
                 }
                 timeElapsed = elapsedTime;
+                broadcastLocation(movement);
             }
         };
     }
 
     private void prepareHelper() {
-        trackingHelper = new TrackingHelper(this);
+        trackingHelper = new TrackingHelper(Movit.getApp());
         trackingHelper.setMovement(movement);
         trackingHelper.setCurrentActivityLogged(true);
         trackingHelper.setLocationCallback(getLocationCallback());
@@ -76,11 +81,25 @@ public class TrackingService extends Service {
         trackingHelper.setTimeBeforeLogging(PreferenceHelper.getTimeBeforeLogging());
     }
 
-    @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
-        init(intent);
-        return trackingBinder;
+    protected void onHandleIntent(Intent intent) {
+        String command = intent.getStringExtra(Constants.COMMAND.getValue());
+        if (command != null) {
+            executeCommand(command);
+        }
+    }
+
+    private void executeCommand(String command) {
+        switch (command) {
+            case "START":
+                startTracking();
+                break;
+            case "STOP":
+                stopTracking();
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -100,9 +119,11 @@ public class TrackingService extends Service {
     }
 
     private void broadcastLocation(Movement movement) {
-        Intent intent  = new Intent(Constants.LOCATION.getValue());
-        intent = Utility.putMovementInIntent(movement, intent);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        if (movement != null) {
+            Intent intent = new Intent(Constants.LOCATION.getValue());
+            intent = Utility.putMovementInIntent(movement, intent);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        }
     }
 
     private IncomingStringCallback getActivityCallback() {
@@ -113,8 +134,8 @@ public class TrackingService extends Service {
                     restartCounter();
                     currentActivity = activityName;
                     trackingHelper.setCurrentActivity(currentActivity);
-                    broadcastActivityStatement();
                 }
+                broadcastActivityStatement();
             }
         };
     }
@@ -125,23 +146,5 @@ public class TrackingService extends Service {
                 Constants.STATEMENT.getValue(),
                 trackingHelper.getActivityStatement(currentActivity));
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
-    }
-
-    public boolean isTracking() {
-        return trackingHelper.isActive();
-    }
-
-    public long getTimeElapsed() {
-        return timeElapsed;
-    }
-
-    public String getCurrentActivity() {
-        return currentActivity;
-    }
-
-    public class TrackingBinder extends Binder {
-        public TrackingService getService() {
-            return TrackingService.this;
-        }
     }
 }

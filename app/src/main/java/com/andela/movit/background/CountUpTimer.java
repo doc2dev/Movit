@@ -1,4 +1,4 @@
-package com.andela.movit.async;
+package com.andela.movit.background;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,6 +30,10 @@ public class CountUpTimer {
             timer.cancel();
             active = false;
         }
+    }
+
+    public void reset() {
+        baseTime = 0;
     }
 
     private TimerTask getTask() {

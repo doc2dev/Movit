@@ -1,4 +1,4 @@
-package com.andela.movit.async;
+package com.andela.movit.background;
 
 import android.os.AsyncTask;
 

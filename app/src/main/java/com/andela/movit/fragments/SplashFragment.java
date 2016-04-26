@@ -74,7 +74,10 @@ public class SplashFragment extends Fragment {
     }
 
     private void doTransitionToTracker(Movement movement) {
-        Utility.launchActivityWithMovement(activity, TrackerActivity.class, movement);
+        Movit app = Movit.getApp();
+        app.setAppLaunched(true);
+        app.setInitialLocation(movement);
+        Utility.launchActivity(activity, TrackerActivity.class);
         locationHelper.disconnect();
         activity.finish();
     }

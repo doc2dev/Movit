@@ -16,6 +16,10 @@ import com.andela.movit.models.Movement;
 import com.andela.movit.receivers.LocationBroadcastReceiver;
 import com.andela.movit.receivers.StringBroadcastReceiver;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import static com.andela.movit.config.Constants.*;
 
 public class Utility {
@@ -31,18 +35,6 @@ public class Utility {
 
     public static void makeToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-    }
-
-    public static void launchActivityWithMovement(Activity activity, Class activityClass,
-                                                  Movement movement) {
-        Intent intent = new Intent(activity, activityClass);
-        activity.startActivity(putMovementInIntent(movement, intent));
-    }
-
-    public static void launchService(
-            Context context, Class serviceClass) {
-        Intent intent = new Intent(context, serviceClass);
-        context.startService(intent);
     }
 
     public static void stopService(Context context, Class serviceClass) {
@@ -92,5 +84,26 @@ public class Utility {
 
     public static void unregisterReceiver(Context context, BroadcastReceiver receiver) {
         LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+    }
+
+    public static int[] getDateValues(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        return new int[] {year, month, day};
+    }
+
+    public static Date generateDate(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        return calendar.getTime();
+    }
+
+    public static String getDateString(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("EEE, MMM d, yyyy");
+        return format.format(date);
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.TrackerActivity"
+    tools:showIn="@layout/activity_tracker">
+
+    <fragment
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:name="com.andela.movit.fragments.TrackerFragment"
+        tools:layout="@layout/fragment_tracker"
+        android:id="@+id/fragment_tracker" />
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_drawer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:paddingBottom="80dp"
+        android:theme="@style/Alt"
+        app:itemTextColor="@color/colorTextPrimary"
+        app:menu="@menu/nav_menu" />
+</android.support.v4.widget.DrawerLayout>

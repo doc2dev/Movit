@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:paddingStart="@dimen/dimen_16"
     android:paddingEnd="@dimen/dimen_16"
-    android:paddingTop="@dimen/dimen_16"
-    android:paddingBottom="@dimen/dimen_16">
+    android:paddingBottom="@dimen/dimen_16"
+    android:paddingTop="@dimen/dimen_16">
 
     <ImageView
         android:layout_width="50dp"
