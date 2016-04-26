@@ -55,6 +55,10 @@ public class TrackerActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_36dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        prepareNavDrawer();
+    }
+
+    private void prepareNavDrawer() {
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         navDrawer = (NavigationView)findViewById(R.id.nav_drawer);
         View drawerHeader = LayoutInflater.from(this).inflate(R.layout.drawer_header, null);
@@ -70,6 +74,7 @@ public class TrackerActivity extends AppCompatActivity {
                 switch (itemId) {
                     case R.id.my_movements:
                         Utility.launchActivity(TrackerActivity.this, MovementActivity.class);
+                        toggleDrawer();
                         break;
                     default:
                         break;
