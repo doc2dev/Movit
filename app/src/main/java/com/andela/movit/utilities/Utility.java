@@ -98,6 +98,7 @@ public class Utility {
     public static Date generateDate(int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
         return calendar.getTime();
     }
 
