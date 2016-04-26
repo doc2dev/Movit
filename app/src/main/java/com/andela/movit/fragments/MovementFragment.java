@@ -43,6 +43,8 @@ public class MovementFragment extends Fragment {
 
     private TextView noMovements;
 
+    MovementRepo repo;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,6 +65,14 @@ public class MovementFragment extends Fragment {
         loadMovementsByDate(new Date());
     }
 
+    private void initializeViews() {
+        listView = (ListView)rootView.findViewById(R.id.list_movements);
+        adapter = new MovementAdapter(context, R.layout.movement_item, movements);
+        listView.setAdapter(adapter);
+        noMovements = (TextView)rootView.findViewById(R.id.no_movement);
+        setActivityTitle("Today");
+    }
+
     private void loadMovementsByDate(Date date) {
         DbAsync dbAsync = new DbAsync(getDbCallback());
         dbAsync.execute(getQueryOperation(date));
@@ -72,7 +82,7 @@ public class MovementFragment extends Fragment {
         return new DbOperation() {
             @Override
             public DbResult execute() {
-                MovementRepo repo = new MovementRepo(context);
+                repo = new MovementRepo(context);
                 return new DbResult(repo.getMovementsByDate(date), null);
             }
         };
@@ -112,14 +122,6 @@ public class MovementFragment extends Fragment {
         }
     }
 
-    private void initializeViews() {
-        listView = (ListView)rootView.findViewById(R.id.list_movements);
-        adapter = new MovementAdapter(context, R.layout.movement_item, movements);
-        listView.setAdapter(adapter);
-        noMovements = (TextView)rootView.findViewById(R.id.no_movement);
-        setActivityTitle("Today");
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_movements, menu);
@@ -130,6 +132,9 @@ public class MovementFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_date:
                 launchDatePicker();
+                break;
+            case android.R.id.home:
+                getActivity().finish();
                 break;
             default:
                 break;
@@ -156,4 +161,16 @@ public class MovementFragment extends Fragment {
             loadMovementsByDate(date);
         }
     };
+
+    @Override
+    public void onPause() {
+        closeDb();
+        super.onPause();
+    }
+
+    private void closeDb() {
+        if (repo != null) {
+            repo.closeDatabase();
+        }
+    }
 }
