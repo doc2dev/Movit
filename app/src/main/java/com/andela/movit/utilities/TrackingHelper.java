@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.andela.movit.R;
 import com.andela.movit.activityrecognition.RecognitionHelper;
-import com.andela.movit.async.DbAsync;
+import com.andela.movit.background.DbAsync;
 import com.andela.movit.data.DbCallback;
 import com.andela.movit.data.DbOperation;
 import com.andela.movit.data.DbResult;
