@@ -32,6 +32,10 @@ public class CountUpTimer {
         }
     }
 
+    public void reset() {
+        baseTime = 0;
+    }
+
     private TimerTask getTask() {
         return new TimerTask() {
             @Override
