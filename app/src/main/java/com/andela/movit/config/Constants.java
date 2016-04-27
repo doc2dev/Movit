@@ -10,7 +10,8 @@ public enum Constants {
     STATEMENT("com.andela.intent.action.STMT"),
     SERVICE_NAME("ActivityRecognitionService"),
     COMMAND("COMMAND"),
-    CURRENT_VISIT("VISIT");
+    CURRENT_VISIT("VISIT"),
+    TIME_BEFORE_LOGGING("T_LOG");
 
     private final String value;
 

@@ -65,6 +65,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.VisitActivity" />
         </activity>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".activities.TrackerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.TrackerActivity" />
+
+        </activity>
     </application>
 
 </manifest>

@@ -57,17 +57,12 @@ public class SplashFragment extends Fragment {
         locationHelper.connect();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        locationHelper.disconnect();
-    }
-
     private LocationCallback getMovementCallback() {
         return new LocationCallback() {
             @Override
             public void onLocationDetected(Movement movement) {
                 Movit.getApp().setIdle(true);
+                locationHelper.disconnect();
                 doTransitionToTracker(movement);
             }
         };

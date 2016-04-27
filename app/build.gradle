@@ -35,6 +35,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.13'
+    compile 'biz.kasual:materialnumberpicker:1.2.1'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.koushikdutta.ion:ion:2.+'

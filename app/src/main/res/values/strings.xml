@@ -22,4 +22,5 @@
     <string name="label_my_locations">My Locations</string>
     <string name="label_no_locations">No Locations Available</string>
     <string name="title_activity_visit_details">VisitDetailsActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 </resources>

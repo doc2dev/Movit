@@ -3,7 +3,6 @@ package com.andela.movit.fragments;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,17 +16,15 @@ import android.widget.TextView;
 
 import com.andela.movit.R;
 import com.andela.movit.adapters.MovementAdapter;
-import com.andela.movit.background.DbAsync;
-import com.andela.movit.data.DbCallback;
 import com.andela.movit.data.DbOperation;
 import com.andela.movit.data.DbResult;
 import com.andela.movit.data.MovementRepo;
+import com.andela.movit.dialogs.DateFragment;
 import com.andela.movit.models.Movement;
 import com.andela.movit.utilities.Utility;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class MovementFragment extends ListFragment<Movement> {
 
