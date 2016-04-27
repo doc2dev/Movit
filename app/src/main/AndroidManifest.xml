@@ -48,9 +48,23 @@
                 android:value=".activities.TrackerActivity" />
         </activity>
         <activity
-            android:name=".activities.LocationActivity"
+            android:name=".activities.VisitActivity"
             android:label="@string/title_activity_location"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:parentActivityName=".activities.TrackerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.TrackerActivity" />
+        </activity>
+        <activity
+            android:name=".activities.VisitDetailsActivity"
+            android:label="@string/title_activity_visit_details"
+            android:parentActivityName=".activities.VisitActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.VisitActivity" />
+        </activity>
     </application>
 
 </manifest>
