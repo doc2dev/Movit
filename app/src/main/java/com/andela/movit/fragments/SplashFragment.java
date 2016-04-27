@@ -77,7 +77,7 @@ public class SplashFragment extends Fragment {
         Movit app = Movit.getApp();
         app.setAppLaunched(true);
         app.setInitialLocation(movement);
-        Utility.launchActivity(activity, TrackerActivity.class);
+        Utility.startActivity(activity, TrackerActivity.class);
         locationHelper.disconnect();
         activity.finish();
     }

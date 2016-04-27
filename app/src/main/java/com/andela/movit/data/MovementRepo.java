@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.andela.movit.models.Movement;
+import com.andela.movit.models.Visit;
 import com.andela.movit.utilities.Utility;
 
 import java.util.ArrayList;
@@ -29,6 +31,8 @@ public class MovementRepo extends SQLiteOpenHelper {
 
     public static final String LONGITUDE = "longitude";
 
+    public static final String DURATION = "duration";
+
     private static final String DATABASE = "movements.db";
 
     private static final int VERSION = 1;
@@ -40,12 +44,25 @@ public class MovementRepo extends SQLiteOpenHelper {
             + PLC_NAME + " TEXT, "
             + TIMESTAMP + " BIGINT, "
             + LATITUDE + " FLOAT, "
-            + LONGITUDE + " FLOAT);";
+            + LONGITUDE + " FLOAT, "
+            + DURATION + " BIGINT);";
 
     private static final String GET_BY_DATE = "SELECT * FROM "
             + TABLE + " WHERE "
             + TIMESTAMP + " > foo AND "
             + TIMESTAMP + " < bar "
+            + "ORDER BY " + TIMESTAMP + " DESC;";
+
+    private static final String GET_LOCATIONS = "SELECT "
+            + PLC_NAME + ", SUM ("
+            + DURATION + ") FROM "
+            + TABLE + " WHERE "
+            + ACT_NAME + " = 'Standing Still' GROUP BY "
+            + PLC_NAME + ";";
+
+    private static final String GET_BY_LOCATION = "SELECT * FROM "
+            + TABLE + " WHERE "
+            + PLC_NAME + " = foo "
             + "ORDER BY " + TIMESTAMP + " DESC;";
 
     private SQLiteDatabase db;
@@ -86,15 +103,11 @@ public class MovementRepo extends SQLiteOpenHelper {
         initializeDatabase();
         String[] ranges = getDateRanges(date);
         String query = GET_BY_DATE.replace("foo", ranges[0]).replace("bar", ranges[1]);
-        Cursor cursor = db.rawQuery(query, null);
-        return extractMovementsFromCursor(cursor);
+        return extractMovementsFromCursor(runQuery(query));
     }
 
-    public List<Movement> getAll() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE + ";";
-        Cursor cursor = db.rawQuery(query, null);
-        return extractMovementsFromCursor(cursor);
+    private Cursor runQuery(String query) {
+        return db.rawQuery(query, null);
     }
 
     private List<Movement> extractMovementsFromCursor(Cursor cursor) {
@@ -113,6 +126,7 @@ public class MovementRepo extends SQLiteOpenHelper {
         movement.setTimeStamp(cursor.getLong(3));
         movement.setLatitude(cursor.getDouble(4));
         movement.setLongitude(cursor.getDouble(5));
+        movement.setDuration(cursor.getLong(6));
         return movement;
     }
 
@@ -137,6 +151,26 @@ public class MovementRepo extends SQLiteOpenHelper {
         values.put(TIMESTAMP, movement.getTimeStamp());
         values.put(LATITUDE, movement.getLatitude());
         values.put(LONGITUDE, movement.getLongitude());
+        values.put(DURATION, movement.getDuration());
         return values;
+    }
+
+    public List<Visit> getVisits() {
+        initializeDatabase();
+        Cursor cursor = runQuery(GET_LOCATIONS);
+        List<Visit> visits = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            Visit visit = new Visit();
+            visit.setPlaceName(cursor.getString(0));
+            visit.setDuration(cursor.getLong(1));
+            visits.add(visit);
+        }
+        return visits;
+    }
+
+    public List<Movement> getMovementsByLocation(String placeName) {
+        initializeDatabase();
+        String query = GET_BY_LOCATION.replace("foo", "'" + placeName + "'");
+        return extractMovementsFromCursor(runQuery(query));
     }
 }

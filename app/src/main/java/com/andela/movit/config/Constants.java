@@ -9,7 +9,8 @@ public enum Constants {
     TIMESTAMP("com.andela.intent.action.STAMP"),
     STATEMENT("com.andela.intent.action.STMT"),
     SERVICE_NAME("ActivityRecognitionService"),
-    COMMAND("COMMAND");
+    COMMAND("COMMAND"),
+    CURRENT_VISIT("VISIT");
 
     private final String value;
 

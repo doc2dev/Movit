@@ -1,19 +1,16 @@
 package com.andela.movit.utilities;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.LayoutInflater;
 import android.widget.Toast;
 
 import com.andela.movit.Movit;
 import com.andela.movit.models.Movement;
-import com.andela.movit.receivers.LocationBroadcastReceiver;
 import com.andela.movit.receivers.StringBroadcastReceiver;
 
 import java.text.SimpleDateFormat;
@@ -28,9 +25,9 @@ public class Utility {
         return Movit.getApp();
     }
 
-    public static void launchActivity(Activity activity, Class activityClass) {
-        Intent intent = new Intent(activity, activityClass);
-        activity.startActivity(intent);
+    public static void startActivity(Context context, Class activityClass) {
+        Intent intent = new Intent(context, activityClass);
+        context.startActivity(intent);
     }
 
     public static void makeToast(Context context, String message) {
@@ -105,5 +102,24 @@ public class Utility {
     public static String getDateString(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("EEE, MMM d, yyyy");
         return format.format(date);
+    }
+
+    public static LayoutInflater getInflater(Context context) {
+        return (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public static String getDurationString(long duration) {
+        long longVal = duration / 1000;
+        int hours = (int) longVal / 3600;
+        int remainder = (int) longVal - hours * 3600;
+        int mins = remainder / 60;
+        remainder = remainder - mins * 60;
+        int secs = remainder;
+        return formatNumber(hours) + ":" + formatNumber(mins) + ":" + formatNumber(secs);
+    }
+
+    private static String formatNumber(int number) {
+        String numString = Integer.toString(number);
+        return number < 9 ? "0" + numString : numString;
     }
 }

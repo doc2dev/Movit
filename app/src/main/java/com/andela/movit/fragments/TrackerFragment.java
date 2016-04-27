@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andela.movit.Movit;
@@ -26,8 +25,6 @@ import com.andela.movit.receivers.LocationBroadcastReceiver;
 import com.andela.movit.receivers.StringBroadcastReceiver;
 import com.andela.movit.utilities.Utility;
 
-import pl.droidsonroids.gif.GifImageView;
-
 import static com.andela.movit.config.Constants.*;
 
 public class TrackerFragment extends Fragment {
@@ -39,12 +36,6 @@ public class TrackerFragment extends Fragment {
     private TextView locationName;
 
     private TextView locationCoords;
-
-    private ImageView lockStatic;
-
-    private GifImageView lockAnim;
-
-    private View notifyContainer;
 
     private TextView activityNameView;
 
@@ -86,7 +77,7 @@ public class TrackerFragment extends Fragment {
     }
 
     private void launchSplash() {
-        Utility.launchActivity(context, SplashActivity.class);
+        Utility.startActivity(context, SplashActivity.class);
         context.finish();
     }
 
@@ -100,9 +91,6 @@ public class TrackerFragment extends Fragment {
         locationCoords = (TextView) rootView.findViewById(R.id.location_coords);
         activityNameView = (TextView) rootView.findViewById(R.id.activity_name);
         trackButton = (Button) rootView.findViewById(R.id.trackButton);
-        notifyContainer = rootView.findViewById(R.id.notify_container);
-        lockStatic = (ImageView) rootView.findViewById(R.id.lock_static);
-        lockAnim = (GifImageView) rootView.findViewById(R.id.lock_gif);
         counter = (Chronometer) rootView.findViewById(R.id.counter);
     }
 
@@ -125,8 +113,9 @@ public class TrackerFragment extends Fragment {
 
     private void stopTracking() {
         sendCommandToService("STOP");
-        toggleViews(false);
+        toggleButton(false);
         counter.stop();
+        counter.setBase(SystemClock.elapsedRealtime());
     }
 
     private void sendCommandToService(String command) {
@@ -137,7 +126,7 @@ public class TrackerFragment extends Fragment {
 
     private void startTracking() {
         sendCommandToService("START");
-        toggleViews(true);
+        toggleButton(true);
         restartCounter();
     }
 
@@ -146,15 +135,11 @@ public class TrackerFragment extends Fragment {
         counter.start();
     }
 
-    private void toggleViews(boolean isTracking) {
+    private void toggleButton(boolean isTracking) {
         if (isTracking) {
-            notifyContainer.setVisibility(View.VISIBLE);
             trackButton.setText(R.string.label_stop_tracking);
-            toggleGiphy(true);
         } else {
-            notifyContainer.setVisibility(View.INVISIBLE);
             trackButton.setText(R.string.label_start_tracking);
-            toggleGiphy(false);
         }
     }
 
@@ -185,16 +170,6 @@ public class TrackerFragment extends Fragment {
         }
     };
 
-    private void toggleGiphy(boolean isTracking) {
-        if (isTracking) {
-            lockStatic.setVisibility(View.GONE);
-            lockAnim.setVisibility(View.VISIBLE);
-        } else {
-            lockStatic.setVisibility(View.VISIBLE);
-            lockAnim.setVisibility(View.GONE);
-        }
-    }
-
     private void displayLocation(Movement mv) {
         locationName.setText(mv.getPlaceName());
         locationCoords.setText(Utility.getCoordsString(mv));
@@ -217,7 +192,7 @@ public class TrackerFragment extends Fragment {
 
     @Override
     public void onResume() {
-        toggleViews(Movit.getApp().isTracking());
+        toggleButton(Movit.getApp().isTracking());
         registerLocationReceiver();
         registerStatementReceiver();
         super.onResume();

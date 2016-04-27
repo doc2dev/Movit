@@ -2,24 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/dimen_8"
-    android:id="@+id/movement_item">
-    
+    android:padding="@dimen/dimen_8">
+
     <ImageView
         android:layout_width="@dimen/dimen_mov_icon"
         android:layout_height="@dimen/dimen_mov_icon"
-        android:id="@+id/icon_activity"
+        android:id="@+id/icon_place"
         android:layout_marginEnd="@dimen/dimen_8"
-        android:src="@drawable/walk"
+        android:src="@drawable/tracker"
         android:tint="@color/colorTextSecondary"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/icon_activity"
-        android:text="@string/label_walking"
-        android:id="@+id/label_activity"
+        android:layout_toEndOf="@id/icon_place"
+        android:text="@string/label_unknown"
+        android:id="@+id/label_visit"
         android:textColor="@color/colorTextPrimary"
         android:textSize="@dimen/font_18"
         android:layout_marginBottom="@dimen/dimen_8"/>
@@ -27,11 +26,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_unknown"
-        android:layout_below="@id/label_activity"
-        android:layout_toEndOf="@id/icon_activity"
+        android:text="@string/label_last_visit"
+        android:layout_below="@id/label_visit"
+        android:layout_toEndOf="@id/icon_place"
         android:textSize="@dimen/font_12"
         android:textColor="@color/colorTextSecondary"
-        android:id="@+id/label_visit"/>
-
+        android:id="@+id/label_duration"/>
 </RelativeLayout>

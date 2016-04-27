@@ -4,4 +4,9 @@
         android:id="@+id/my_movements"
         android:title="@string/label_movements"
         android:icon="@drawable/walk"/>
+
+    <item
+        android:id="@+id/my_locations"
+        android:title="@string/label_my_locations"
+        android:icon="@drawable/tracker"/>
 </menu>

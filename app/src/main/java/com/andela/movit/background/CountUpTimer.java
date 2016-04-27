@@ -36,6 +36,10 @@ public class CountUpTimer {
         baseTime = 0;
     }
 
+    public long getElapsedTime() {
+        return baseTime;
+    }
+
     private TimerTask getTask() {
         return new TimerTask() {
             @Override

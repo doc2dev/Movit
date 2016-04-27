@@ -1,29 +1,20 @@
 package com.andela.movit.adapters;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andela.movit.R;
 import com.andela.movit.models.Movement;
+import com.andela.movit.utilities.Utility;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.SimpleTimeZone;
-import java.util.logging.SimpleFormatter;
 
-public class MovementAdapter extends ArrayAdapter<Movement> {
-
-    private Context context;
-
-    private List<Movement> movements;
-
-    private int viewId;
+public class MovementAdapter extends FillableAdapter<Movement> {
 
     @Override
     public int getItemViewType(int position) {
@@ -32,30 +23,26 @@ public class MovementAdapter extends ArrayAdapter<Movement> {
 
     public MovementAdapter(Context context, int resource, List<Movement> objects) {
         super(context, resource, objects);
-        this.context = context;
-        this.movements = objects;
-        this.viewId = resource;
-    }
-
-    public void setMovements(List<Movement> movts) {
-        movements.clear();
-        for (Movement movement : movts) {
-            movements.add(movement);
-        }
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = getInflater().inflate(viewId, null);
-        Movement movement = movements.get(position);
+        View view = Utility.getInflater(context).inflate(viewId, null);
+        Movement movement = items.get(position);
         TextView actView = (TextView)view.findViewById(R.id.label_activity);
         String activity = movement.getActivityName();
         actView.setText(activity);
-        TextView locView = (TextView)view.findViewById(R.id.label_location);
-        locView.setText(movement.getPlaceName() + " at " + getTimeString(movement.getTimeStamp()));
+        TextView locView = (TextView)view.findViewById(R.id.label_visit);
+        locView.setText(getDescription(movement));
         ImageView icon = (ImageView)view.findViewById(R.id.icon_activity);
         icon.setImageResource(getIconId(activity));
         return view;
+    }
+
+    private String getDescription(Movement movement) {
+        return movement.getPlaceName()
+                + ", for "
+                + Utility.getDurationString(movement.getDuration());
     }
 
     private int getIconId(String activity) {
@@ -77,14 +64,9 @@ public class MovementAdapter extends ArrayAdapter<Movement> {
         }
     }
 
-    private LayoutInflater getInflater() {
-        return (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
     private String getTimeString(long timestamp) {
         Date date = new Date(timestamp);
         SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
         return dateFormat.format(date);
     }
-
 }

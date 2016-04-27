@@ -2,6 +2,7 @@ package com.andela.movit.background;
 
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.andela.movit.Movit;
 import com.andela.movit.config.Constants;
@@ -16,13 +17,13 @@ public class TrackingService extends InfiniteService {
 
     private Movement movement;
 
-    private String currentActivity = "Unknown";
+    private String currentActivity;
+
+    private String previousActivity;
 
     private TrackingHelper trackingHelper;
 
     private CountUpTimer counter;
-
-    private long timeElapsed;
 
     public TrackingService() {
         super("TrackingService");
@@ -39,7 +40,15 @@ public class TrackingService extends InfiniteService {
     public void stopTracking() {
         trackingHelper.stopTracking();
         counter.stop();
+        logMovement(currentActivity);
         Movit.getApp().setTracking(false);
+    }
+
+    private void logMovement(String activityName) {
+        long elapsedTime = counter.getElapsedTime();
+        if (trackingHelper.hasTimeElapsed(elapsedTime)) {
+            trackingHelper.logCurrentActivity(activityName, elapsedTime);
+        }
     }
 
     private void restartCounter() {
@@ -55,6 +64,8 @@ public class TrackingService extends InfiniteService {
         }
         counter = new CountUpTimer();
         counter.setListener(getTickListener());
+        previousActivity = "Unknown";
+        currentActivity = "Unknown";
         prepareHelper();
     }
 
@@ -62,11 +73,6 @@ public class TrackingService extends InfiniteService {
         return new TimerTickListener() {
             @Override
             public void onTick(long elapsedTime) {
-                if (trackingHelper.hasTimeElapsed(elapsedTime)
-                        && !trackingHelper.isCurrentActivityLogged()) {
-                    trackingHelper.logCurrentActivity(currentActivity);
-                }
-                timeElapsed = elapsedTime;
                 broadcastLocation(movement);
             }
         };
@@ -75,7 +81,6 @@ public class TrackingService extends InfiniteService {
     private void prepareHelper() {
         trackingHelper = new TrackingHelper(Movit.getApp());
         trackingHelper.setMovement(movement);
-        trackingHelper.setCurrentActivityLogged(true);
         trackingHelper.setLocationCallback(getLocationCallback());
         trackingHelper.setActivityCallback(getActivityCallback());
         trackingHelper.setTimeBeforeLogging(PreferenceHelper.getTimeBeforeLogging());
@@ -132,8 +137,10 @@ public class TrackingService extends InfiniteService {
             public void onStringArrive(String activityName) {
                 if (trackingHelper.hasActivityChanged(activityName)) {
                     restartCounter();
+                    previousActivity = currentActivity;
                     currentActivity = activityName;
                     trackingHelper.setCurrentActivity(currentActivity);
+                    logMovement(previousActivity);
                 }
                 broadcastActivityStatement();
             }

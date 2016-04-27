@@ -70,12 +70,14 @@ public class TrackerActivity extends AppCompatActivity {
         return new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
+                toggleDrawer();
                 int itemId = item.getItemId();
                 switch (itemId) {
                     case R.id.my_movements:
-                        Utility.launchActivity(TrackerActivity.this, MovementActivity.class);
-                        toggleDrawer();
+                        Utility.startActivity(TrackerActivity.this, MovementActivity.class);
                         break;
+                    case R.id.my_locations:
+                        Utility.startActivity(TrackerActivity.this, VisitActivity.class);
                     default:
                         break;
                 }

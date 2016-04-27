@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No movements for this day"
+        android:text="No movements found"
         android:id="@+id/no_movement"
         android:layout_centerInParent="true"/>
 
