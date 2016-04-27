@@ -26,5 +26,4 @@ public class VisitActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
-
 }
