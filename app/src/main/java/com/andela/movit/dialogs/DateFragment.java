@@ -1,4 +1,4 @@
-package com.andela.movit.fragments;
+package com.andela.movit.dialogs;
 
 
 import android.app.DatePickerDialog;
