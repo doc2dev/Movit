@@ -12,7 +12,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.andela.movit.R;
+import com.andela.movit.activities.VisitDetailsActivity;
 import com.andela.movit.adapters.VisitAdapter;
+import com.andela.movit.config.Constants;
 import com.andela.movit.data.DbOperation;
 import com.andela.movit.data.DbResult;
 import com.andela.movit.data.MovementRepo;
@@ -57,7 +59,9 @@ public class VisitFragment extends ListFragment<Visit> {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Visit visit = adapter.getItem(position);
-            Intent intent = new Intent(context, )
+            Intent intent = new Intent(context, VisitDetailsActivity.class);
+            intent.putExtra(Constants.CURRENT_VISIT.getValue(), visit.getPlaceName());
+            context.startActivity(intent);
         }
     };
 
