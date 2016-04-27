@@ -83,7 +83,8 @@ public class TrackingService extends InfiniteService {
         trackingHelper.setMovement(movement);
         trackingHelper.setLocationCallback(getLocationCallback());
         trackingHelper.setActivityCallback(getActivityCallback());
-        trackingHelper.setTimeBeforeLogging(PreferenceHelper.getTimeBeforeLogging());
+        PreferenceHelper preferenceHelper = new PreferenceHelper(Movit.getApp());
+        trackingHelper.setTimeBeforeLogging(preferenceHelper.getTimeBeforeLogging());
     }
 
     @Override
