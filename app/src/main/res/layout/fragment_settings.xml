@@ -6,8 +6,21 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.andela.movit.activities.SettingsActivityFragment"
+    tools:context=".fragments.SettingsFragment"
     tools:showIn="@layout/activity_settings">
 
+    <TextView
+        android:id="@+id/settings_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set time before logging:"
+        android:layout_marginBottom="@dimen/dimen_16"/>
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="none"
+        android:text="5 Minutes"
+        android:id="@+id/minutes_display"
+        android:layout_below="@id/settings_label"/>
 </RelativeLayout>
