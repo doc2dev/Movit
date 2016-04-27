@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -32,7 +33,10 @@ public class TrackerActivity extends AppCompatActivity {
         switch (id) {
             case android.R.id.home:
                 toggleDrawer();
-                return true;
+                break;
+            case R.id.action_settings:
+                Utility.startActivity(this, SettingsActivity.class);
+                break;
             default:
                 break;
         }
@@ -84,5 +88,11 @@ public class TrackerActivity extends AppCompatActivity {
                 return false;
             }
         };
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_tracker, menu);
+        return true;
     }
 }
