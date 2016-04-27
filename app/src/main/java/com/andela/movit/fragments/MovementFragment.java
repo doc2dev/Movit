@@ -29,21 +29,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MovementFragment extends Fragment {
-
-    private ListView listView;
+public class MovementFragment extends ListFragment<Movement> {
 
     private View rootView;
 
-    private List<Movement> movements = new ArrayList<>();
-
     private Context context;
 
-    MovementAdapter adapter;
+    private MovementRepo repo;
 
-    private TextView noMovements;
-
-    MovementRepo repo;
+    private Date queryDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,65 +55,29 @@ public class MovementFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         rootView = view;
         context = getActivity();
+        items = new ArrayList<>();
         initializeViews();
-        loadMovementsByDate(new Date());
+        queryDate = new Date();
+        dbOperation = getQueryOperation();
+        loadItems();
     }
 
     private void initializeViews() {
         listView = (ListView)rootView.findViewById(R.id.list_movements);
-        adapter = new MovementAdapter(context, R.layout.movement_item, movements);
+        adapter = new MovementAdapter(context, R.layout.movement_item, items);
         listView.setAdapter(adapter);
-        noMovements = (TextView)rootView.findViewById(R.id.no_movement);
+        noData = (TextView)rootView.findViewById(R.id.no_movement);
         setActivityTitle("Today");
     }
 
-    private void loadMovementsByDate(Date date) {
-        DbAsync dbAsync = new DbAsync(getDbCallback());
-        dbAsync.execute(getQueryOperation(date));
-    }
-
-    private DbOperation getQueryOperation(final Date date) {
+    private DbOperation getQueryOperation() {
         return new DbOperation() {
             @Override
             public DbResult execute() {
                 repo = new MovementRepo(context);
-                return new DbResult(repo.getMovementsByDate(date), null);
+                return new DbResult(repo.getMovementsByDate(queryDate), null);
             }
         };
-    }
-
-    private DbCallback getDbCallback() {
-        return new DbCallback() {
-            @Override
-            public void onOperationSuccess(Object result) {
-                movements = (List<Movement>)result;
-                fillAdapter();
-            }
-
-            @Override
-            public void onOperationFail(String errorMessage) {
-            }
-        };
-    }
-
-    private void fillAdapter() {
-        if (movements.size() > 0) {
-            adapter.setMovements(movements);
-            adapter.notifyDataSetChanged();
-            toggleViews(true);
-        } else {
-            toggleViews(false);
-        }
-    }
-
-    private void toggleViews(boolean movementsAvailable) {
-        if (movementsAvailable) {
-            listView.setVisibility(View.VISIBLE);
-            noMovements.setVisibility(View.GONE);
-        } else {
-            listView.setVisibility(View.GONE);
-            noMovements.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -158,7 +116,8 @@ public class MovementFragment extends Fragment {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             Date date = Utility.generateDate(year, monthOfYear, dayOfMonth);
             setActivityTitle(Utility.getDateString(date));
-            loadMovementsByDate(date);
+            queryDate = date;
+            loadItems();
         }
     };
 
