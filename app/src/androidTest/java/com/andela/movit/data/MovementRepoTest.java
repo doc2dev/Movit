@@ -1,15 +1,13 @@
 package com.andela.movit.data;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.andela.movit.Movit;
-import com.andela.movit.config.Constants;
 import com.andela.movit.models.Movement;
+import com.andela.movit.models.Visit;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,8 +61,14 @@ public class MovementRepoTest {
     }
 
     @Test
-    public void testGetAll() {
-        List<Movement> movements = repo.getAll();
+    public void testGetLocations() {
+        List<Visit> visits = repo.getVisits();
+        assertTrue(visits.size() > 0);
+    }
+
+    @Test
+    public void testGetByPlaceName() {
+        List<Movement> movements = repo.getMovementsByLocation("Ngong Forest Rd, Nairobi, Kenya");
         assertTrue(movements.size() > 0);
     }
 
