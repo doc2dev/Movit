@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.andela.movit.R;
+import com.andela.movit.dialogs.MinuteCallback;
+import com.andela.movit.dialogs.MinutePickerFragment;
+import com.andela.movit.utilities.PreferenceHelper;
+import com.andela.movit.utilities.Utility;
 
 public class SettingsFragment extends Fragment {
 
@@ -45,6 +49,20 @@ public class SettingsFragment extends Fragment {
 
     private void launchMinuteDialog() {
         MinutePickerFragment fragment = new MinutePickerFragment();
-        fragment
+        fragment.setCallback(new MinuteCallback() {
+            @Override
+            public void onMinutesSelected(int minutes) {
+                storeMinutes(minutes);
+            }
+        });
+        fragment.show(getFragmentManager(), "minutePicker");
+    }
+
+    private void storeMinutes(int minutes) {
+        String displayText = Integer.toString(minutes) + " Minutes";
+        minuteDisplay.setText(displayText);
+        PreferenceHelper preferenceHelper = new PreferenceHelper(context);
+        preferenceHelper.setTimeBeforeLogging(minutes);
+        Utility.makeToast(context, "Time set to " + displayText);
     }
 }
