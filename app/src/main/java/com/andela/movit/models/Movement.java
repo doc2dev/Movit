@@ -12,8 +12,18 @@ public class Movement {
 
     private long timeStamp;
 
+    private long duration;
+
     public long getTimeStamp() {
         return timeStamp;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 
     public void setTimeStamp(long timeStamp) {
