@@ -31,12 +31,6 @@ public class TrackingHelper {
 
     private long timeBeforeLogging;
 
-    private boolean isCurrentActivityLogged = false;
-
-    public boolean isCurrentActivityLogged() {
-        return isCurrentActivityLogged;
-    }
-
     public TrackingHelper(Context context) {
         this.context = context;
         initializeVariables();
@@ -47,7 +41,6 @@ public class TrackingHelper {
     }
 
     public void setCurrentActivity(String activity) {
-        isCurrentActivityLogged = false;
         currentActivity = activity;
     }
 
@@ -69,26 +62,22 @@ public class TrackingHelper {
         currentActivity = "Unknown";
     }
 
-    public void logCurrentActivity(String activity) {
-        if (!isCurrentActivityLogged && !isActivityUnknown(activity)) {
+    public void logCurrentActivity(String activity, long elapsedTime) {
+        if (!isActivityUnknown(activity)) {
             movement.setActivityName(activity);
+            movement.setDuration(elapsedTime);
             writeMovementToDatabase(movement);
-            isCurrentActivityLogged = true;
         }
     }
 
-    private boolean isActivityUnknown(String currentActivity) {
-        return currentActivity.equals("Unknown");
+    private boolean isActivityUnknown(String activ) {
+        return activ.equals("Unknown");
     }
 
     private void writeMovementToDatabase(Movement movement) {
         movement.setTimeStamp(System.currentTimeMillis());
         DbAsync dbAsync = new DbAsync(getDbCallback());
         dbAsync.execute(getInsertOperation(movement));
-    }
-
-    public void setCurrentActivityLogged(boolean currentActivityLogged) {
-        isCurrentActivityLogged = currentActivityLogged;
     }
 
     public void startTracking() {
@@ -103,12 +92,8 @@ public class TrackingHelper {
         isActive = false;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public boolean hasTimeElapsed(long elapsedMillis) {
-        return elapsedMillis >= timeBeforeLogging;
+    public boolean hasTimeElapsed(long timeElapsed) {
+        return timeElapsed >= timeBeforeLogging;
     }
 
     public boolean hasActivityChanged(String activityName) {
@@ -124,7 +109,6 @@ public class TrackingHelper {
 
             @Override
             public void onOperationFail(String errorMessage) {
-                Log.e("FOO", errorMessage);
             }
         };
     }
@@ -133,9 +117,7 @@ public class TrackingHelper {
         if (isActivityUnknown(activityName)) {
             return context.getString(R.string.label_activity_name);
         }
-        return "You have been "
-                + activityName
-                + " for:";
+        return "Current status: " + activityName;
     }
 
     private DbOperation getInsertOperation(final Movement movement) {
