@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.andela.movit.Movit;
 import com.andela.movit.R;
+import com.andela.movit.views.activities.TrackerActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

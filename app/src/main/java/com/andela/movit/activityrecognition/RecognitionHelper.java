@@ -1,5 +1,10 @@
-package com.andela.movit.activityrecognition;
+/**
+ * This class encapsulates all components concerned with activity recognition. It provides the
+ * callbacks required by the Google API client, a means of starting and stopping activity
+ * recognition, and a way to set a callback that will be invoked whenever an activity is detected.
+ * */
 
+package com.andela.movit.activityrecognition;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -11,7 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.andela.movit.config.Constants;
-import com.andela.movit.listeners.IncomingStringCallback;
+import com.andela.movit.location.IncomingStringCallback;
 import com.andela.movit.receivers.StringBroadcastReceiver;
 import com.andela.movit.utilities.Utility;
 import com.google.android.gms.common.ConnectionResult;

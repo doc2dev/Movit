@@ -7,9 +7,8 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.andela.movit.Movit;
-import com.andela.movit.activities.SplashActivity;
-import com.andela.movit.activities.TrackerActivity;
-import com.andela.movit.location.LocationHelper;
+import com.andela.movit.views.activities.SplashActivity;
+import com.andela.movit.views.activities.TrackerActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,7 +23,7 @@ public class SplashActivityTest {
 
     @Rule
     public ActivityTestRule<SplashActivity> testRule
-             = new ActivityTestRule<>(SplashActivity.class);
+            = new ActivityTestRule<>(SplashActivity.class);
 
     @Test
     public void testTransition() throws Exception {
@@ -36,4 +35,3 @@ public class SplashActivityTest {
         Intents.release();
     }
 }
-

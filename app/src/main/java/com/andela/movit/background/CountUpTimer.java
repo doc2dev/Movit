@@ -1,3 +1,8 @@
+/**
+ * This class implements a simple count-up timer, with operations for starting, stopping and
+ * resetting a timer, and for setting a callback to be invoked every time the timer ticks.
+ * */
+
 package com.andela.movit.background;
 
 import java.util.Timer;
@@ -13,9 +18,18 @@ public class CountUpTimer {
 
     private boolean active;
 
+    /**
+     * Sets the callback to be invoked when the timer ticks.
+     * @param listener The callback to be invoked.
+     * */
+
     public void setListener(TimerTickListener listener) {
         this.listener = listener;
     }
+
+    /**
+     * Starts the timer.
+     * */
 
     public void start() {
         if (!active) {
@@ -25,6 +39,10 @@ public class CountUpTimer {
         }
     }
 
+    /**
+     * Stops the timer.
+     * */
+
     public void stop() {
         if (active) {
             timer.cancel();
@@ -32,9 +50,17 @@ public class CountUpTimer {
         }
     }
 
+    /**
+     * Resets the timer.
+     * */
+
     public void reset() {
         baseTime = 0;
     }
+
+    /**
+     * Returns the value (in milliseconds) that has elapsed since the timer was started.
+     * */
 
     public long getElapsedTime() {
         return baseTime;

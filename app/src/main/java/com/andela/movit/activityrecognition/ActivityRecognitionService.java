@@ -1,10 +1,13 @@
-package com.andela.movit.activityrecognition;
+/**
+ * This class handles the activity updates coming in from the Google PLay Activity Recognition API.
+ * Every time an activity update comes in, it broadcasts it.
+ * */
 
+package com.andela.movit.activityrecognition;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.andela.movit.config.Constants;
 import com.google.android.gms.location.ActivityRecognitionResult;

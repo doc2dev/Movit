@@ -1,6 +1,8 @@
 package com.andela.movit;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.support.test.espresso.IdlingResource;
 
 import com.andela.movit.background.TrackingService;
@@ -83,7 +85,9 @@ public class Movit extends Application implements IdlingResource {
         super.onTerminate();
     }
 
-    public Movit() {
-        super();
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }

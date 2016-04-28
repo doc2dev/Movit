@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Custom">
+        <attr name="displayedChar" format="string"/>
+        <attr name="radius" format="float"/>
+        <attr name="stroke_color" format="color"/>
+        <attr name="stroke_width" format="float"/>
+    </declare-styleable>
+</resources>

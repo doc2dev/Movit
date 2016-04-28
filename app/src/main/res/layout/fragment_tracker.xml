@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingStart="@dimen/dimen_16"
     android:paddingEnd="@dimen/dimen_16"
     android:paddingBottom="@dimen/dimen_16"
@@ -12,7 +13,7 @@
         android:layout_height="@dimen/dimen_tracker"
         android:src="@drawable/tracker"
         android:id="@+id/tracker_icon"
-        android:tint="@color/colorDivider"/>
+        android:tint="@color/colorTrack"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,7 +22,7 @@
         android:text="@string/label_unknown"
         android:layout_marginStart="@dimen/dimen_16"
         android:textSize="@dimen/font_24"
-        android:textColor="@color/colorTextPrimary"
+        android:textColor="@color/colorPrimaryDark"
         android:id="@+id/location_name"/>
 
     <TextView
@@ -33,34 +34,46 @@
         android:layout_marginStart="@dimen/dimen_16"
         android:layout_marginTop="@dimen/dimen_16"
         android:textSize="16sp"
-        android:id="@+id/location_coords"/>
+        android:id="@+id/location_coords"
+        android:textColor="@color/colorTextPrimary"/>
 
-    <Chronometer
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_8"
-        android:textSize="@dimen/font_24"
-        android:textColor="@color/colorTextSecondary"
-        android:id="@+id/counter"
-        android:layout_centerInParent="true"/>
+    <FrameLayout
+        android:layout_width="@dimen/dimen_img"
+        android:layout_height="@dimen/dimen_img"
+        android:id="@+id/counter_container"
+        android:layout_centerInParent="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/notify_container"
-        android:layout_below="@id/counter"
-        android:layout_marginTop="@dimen/dimen_24"
-        android:layout_marginStart="@dimen/dimen_16">
+        <com.andela.movit.views.custom.CircleOverlay
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:radius="85"
+            app:stroke_color="@color/colorPrimary"
+            app:stroke_width="3.0"
+            android:layout_gravity="center"/>
 
-        <TextView
+        <Chronometer
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_activity_name"
-            android:textSize="@dimen/font_20"
-            android:textColor="@color/colorTextPrimary"
-            android:id="@+id/activity_name"/>
-    </LinearLayout>
+            android:layout_marginTop="@dimen/dimen_8"
+            android:textSize="42sp"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/counter"
+            android:layout_gravity="center"
+            android:textStyle="italic"
+            android:fontFamily="sans-serif-light"/>
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_activity_name"
+        android:textSize="@dimen/font_20"
+        android:textColor="@color/colorTextPrimary"
+        android:id="@+id/activity_name"
+        android:layout_below="@id/counter_container"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_32"
+        android:textStyle="bold"/>
 
     <android.support.v7.widget.AppCompatButton
         android:layout_width="match_parent"

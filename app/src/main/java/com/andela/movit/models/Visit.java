@@ -1,3 +1,8 @@
+/**
+ * This class stores an aggregate of visits to a particular place. It stores the name of the place
+ * and the total time spent at that duration.
+ * */
+
 package com.andela.movit.models;
 
 public class Visit {

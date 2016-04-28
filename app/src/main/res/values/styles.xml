@@ -30,5 +30,4 @@
     <style name="Alt" parent="AppTheme">
         <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
     </style>
-
 </resources>
