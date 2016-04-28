@@ -1,8 +1,13 @@
+/**
+ * This class provides an operation for obtaining the name of a place, given the latitude and
+ * longitude coordinates of the place. Since the operation is asynchronous, an operation is
+ * provided for setting a callback to be invoked when the place name is determined.
+ * */
+
 package com.andela.movit.location;
 
 import android.content.Context;
 
-import com.andela.movit.listeners.IncomingStringCallback;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -15,13 +20,24 @@ public class GeoHelper {
     private final String URL_BASE
             = "http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=";
 
+    public GeoHelper(Context context) {
+        this.context = context;
+    }
+
+    /**
+     * Sets a callback to be invoked once the activity name has been detected.
+     * @param callback the callback object to be invoked.
+     * */
+
     public void setCallback(IncomingStringCallback callback) {
         this.callback = callback;
     }
 
-    public GeoHelper(Context context) {
-        this.context = context;
-    }
+    /**
+     * Gets the name of a place using the latitude and longitude of the place.
+     * @param latitude the latitude of the place
+     * @param longitude the longitude of the place.
+     * */
 
     public void getPlaceName(double latitude, double longitude) {
         String latLng = Double.toString(latitude) + "," + Double.toString(longitude);
