@@ -1,3 +1,9 @@
+/**
+ * This class defines a movement. It stores the activity that was being performed, the place
+ * where the activity was performed (place name, latitude and longitude), the time at which the
+ * movement was recorded and the duration over which the activity was done.
+ * */
+
 package com.andela.movit.models;
 
 public class Movement {

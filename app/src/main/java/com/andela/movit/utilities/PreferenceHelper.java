@@ -21,7 +21,7 @@ public class PreferenceHelper {
     }
 
     public long getTimeBeforeLogging() {
-        int minutes = preferences.getInt(Constants.TIME_BEFORE_LOGGING.getValue(), 1);
+        int minutes = preferences.getInt(Constants.TIME_BEFORE_LOGGING.getValue(), 5);
         return minutes * 60000;
     }
 

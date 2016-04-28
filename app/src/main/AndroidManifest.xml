@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.andela.movit">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -12,14 +13,16 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:label">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".activities.TrackerActivity"
+            android:name=".views.activities.TrackerActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,52 +30,57 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".views.activities.SplashActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".activityrecognition.ActivityRecognitionService" />
-        <service
-            android:name=".background.TrackingService"
-            android:enabled="true"
-            android:exported="true" />
+
+        <service android:name=".background.TrackingService"/>
 
         <activity
-            android:name=".activities.MovementActivity"
+            android:name=".views.activities.MovementActivity"
             android:label="@string/title_activity_movements"
-            android:parentActivityName=".activities.TrackerActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".views.activities.TrackerActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.TrackerActivity" />
+                android:value=".views.activities.TrackerActivity" />
         </activity>
+
         <activity
-            android:name=".activities.VisitActivity"
+            android:name=".views.activities.VisitActivity"
             android:label="@string/title_activity_location"
-            android:parentActivityName=".activities.TrackerActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".views.activities.TrackerActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.TrackerActivity" />
+                android:value=".views.activities.TrackerActivity" />
         </activity>
         <activity
-            android:name=".activities.VisitDetailsActivity"
+            android:name=".views.activities.VisitDetailsActivity"
             android:label="@string/title_activity_visit_details"
-            android:parentActivityName=".activities.VisitActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".views.activities.VisitActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.VisitActivity" />
+                android:value=".views.activities.VisitActivity" />
         </activity>
         <activity
-            android:name=".activities.SettingsActivity"
+            android:name=".views.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".activities.TrackerActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".views.activities.TrackerActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.TrackerActivity" />
+                android:value=".views.activities.TrackerActivity" />
 
         </activity>
     </application>

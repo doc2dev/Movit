@@ -1,3 +1,10 @@
+/**
+ * This class encapsulates all components concerned with location detection. It provides the
+ * callbacks required by the Google API client, a means of starting and stopping location
+ * detection, and a way to set a callback that will be invoked whenever a new location is
+ * detected.
+ * */
+
 package com.andela.movit.location;
 
 import android.content.Context;
@@ -6,9 +13,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.andela.movit.listeners.LocationCallback;
-import com.andela.movit.listeners.IncomingStringCallback;
 import com.andela.movit.models.Movement;
+import com.andela.movit.utilities.Utility;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.ActivityRecognition;
@@ -88,12 +94,12 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks,
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        String message = "Connection failed, please connect to the internet and turn on Gps.";
+        Utility.makeToast(context, message);
     }
 
     @Override

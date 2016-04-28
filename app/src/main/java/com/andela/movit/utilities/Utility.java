@@ -122,4 +122,8 @@ public class Utility {
         String numString = Integer.toString(number);
         return number < 9 ? "0" + numString : numString;
     }
+
+    public static void broadcastIntent(Context context, Intent intent) {
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
 }

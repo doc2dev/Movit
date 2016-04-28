@@ -13,11 +13,11 @@ import android.widget.TextView;
 import com.andela.movit.Movit;
 import com.andela.movit.R;
 
-import com.andela.movit.views.activities.TrackerActivity;
-import com.andela.movit.listeners.LocationCallback;
+import com.andela.movit.location.LocationCallback;
 import com.andela.movit.models.Movement;
 import com.andela.movit.location.LocationHelper;
 import com.andela.movit.utilities.Utility;
+import com.andela.movit.views.activities.TrackerActivity;
 
 
 public class SplashFragment extends Fragment {

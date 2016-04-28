@@ -13,7 +13,7 @@ import com.andela.movit.R;
 import com.andela.movit.views.adapters.MovementAdapter;
 import com.andela.movit.data.DbOperation;
 import com.andela.movit.data.DbResult;
-import com.andela.movit.data.MovementRepo;
+import com.andela.movit.data.DbRepo;
 import com.andela.movit.models.Movement;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class VisitDetailsFragment extends ListFragment<Movement> {
 
     private String placeName;
 
-    private MovementRepo repo;
+    private DbRepo repo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +49,7 @@ public class VisitDetailsFragment extends ListFragment<Movement> {
         return new DbOperation() {
             @Override
             public DbResult execute() {
-                repo = new MovementRepo(context);
+                repo = new DbRepo(context);
                 return new DbResult(repo.getMovementsByLocation(placeName), null);
             }
         };

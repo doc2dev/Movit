@@ -6,7 +6,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.andela.movit.views.adapters.FillableAdapter;
-import com.andela.movit.background.DbAsync;
+import com.andela.movit.data.DbAsync;
 import com.andela.movit.data.DbCallback;
 import com.andela.movit.data.DbOperation;
 

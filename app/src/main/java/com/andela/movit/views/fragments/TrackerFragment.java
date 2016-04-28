@@ -16,10 +16,10 @@ import android.widget.TextView;
 
 import com.andela.movit.Movit;
 import com.andela.movit.R;
-import com.andela.movit.views.activities.SplashActivity;
 import com.andela.movit.background.TrackingService;
-import com.andela.movit.listeners.IncomingStringCallback;
-import com.andela.movit.listeners.LocationCallback;
+import com.andela.movit.views.activities.SplashActivity;
+import com.andela.movit.location.IncomingStringCallback;
+import com.andela.movit.location.LocationCallback;
 import com.andela.movit.models.Movement;
 import com.andela.movit.receivers.LocationBroadcastReceiver;
 import com.andela.movit.receivers.StringBroadcastReceiver;
@@ -84,6 +84,12 @@ public class TrackerFragment extends Fragment {
     private void initializeComponents() {
         initializeViews();
         setTrackClickListener();
+        startService();
+    }
+
+    private void startService() {
+        Intent intent = new Intent(context, TrackingService.class);
+        context.startService(intent);
     }
 
     private void initializeViews() {

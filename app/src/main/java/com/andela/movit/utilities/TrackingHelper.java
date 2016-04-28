@@ -1,17 +1,16 @@
 package com.andela.movit.utilities;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.andela.movit.R;
 import com.andela.movit.activityrecognition.RecognitionHelper;
-import com.andela.movit.background.DbAsync;
+import com.andela.movit.data.DbAsync;
 import com.andela.movit.data.DbCallback;
 import com.andela.movit.data.DbOperation;
 import com.andela.movit.data.DbResult;
-import com.andela.movit.data.MovementRepo;
-import com.andela.movit.listeners.IncomingStringCallback;
-import com.andela.movit.listeners.LocationCallback;
+import com.andela.movit.data.DbRepo;
+import com.andela.movit.location.IncomingStringCallback;
+import com.andela.movit.location.LocationCallback;
 import com.andela.movit.location.LocationHelper;
 import com.andela.movit.models.Movement;
 
@@ -124,7 +123,7 @@ public class TrackingHelper {
         return new DbOperation() {
             @Override
             public DbResult execute() {
-                MovementRepo repo = new MovementRepo(context);
+                DbRepo repo = new DbRepo(context);
                 return new DbResult(repo.addMovement(movement), null);
             }
         };

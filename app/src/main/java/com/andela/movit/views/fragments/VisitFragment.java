@@ -17,7 +17,7 @@ import com.andela.movit.views.adapters.VisitAdapter;
 import com.andela.movit.config.Constants;
 import com.andela.movit.data.DbOperation;
 import com.andela.movit.data.DbResult;
-import com.andela.movit.data.MovementRepo;
+import com.andela.movit.data.DbRepo;
 import com.andela.movit.models.Visit;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class VisitFragment extends ListFragment<Visit> {
 
     private View rootView;
 
-    private MovementRepo repo;
+    private DbRepo repo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,7 +68,7 @@ public class VisitFragment extends ListFragment<Visit> {
     private DbOperation queryOperation = new DbOperation() {
         @Override
         public DbResult execute() {
-            repo = new MovementRepo(context);
+            repo = new DbRepo(context);
             return new DbResult(repo.getVisits(), null);
         }
     };

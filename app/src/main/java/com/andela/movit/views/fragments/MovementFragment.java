@@ -18,7 +18,7 @@ import com.andela.movit.R;
 import com.andela.movit.views.adapters.MovementAdapter;
 import com.andela.movit.data.DbOperation;
 import com.andela.movit.data.DbResult;
-import com.andela.movit.data.MovementRepo;
+import com.andela.movit.data.DbRepo;
 import com.andela.movit.views.dialogs.DateFragment;
 import com.andela.movit.models.Movement;
 import com.andela.movit.utilities.Utility;
@@ -32,7 +32,7 @@ public class MovementFragment extends ListFragment<Movement> {
 
     private Context context;
 
-    private MovementRepo repo;
+    private DbRepo repo;
 
     private Date queryDate;
 
@@ -71,7 +71,7 @@ public class MovementFragment extends ListFragment<Movement> {
         return new DbOperation() {
             @Override
             public DbResult execute() {
-                repo = new MovementRepo(context);
+                repo = new DbRepo(context);
                 return new DbResult(repo.getMovementsByDate(queryDate), null);
             }
         };

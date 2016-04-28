@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:theme="@style/Splash"
-    tools:context="com.andela.movit.activities.SplashActivity">
+    tools:context=".views.activities.SplashActivity">
 
 
 

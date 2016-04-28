@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.TrackerActivity"
+    tools:context=".views.activities.TrackerActivity"
     tools:showIn="@layout/activity_tracker">
 
     <fragment
@@ -14,7 +14,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:name="com.andela.movit.fragments.TrackerFragment"
+        android:name="com.andela.movit.views.fragments.TrackerFragment"
         tools:layout="@layout/fragment_tracker"
         android:id="@+id/fragment_tracker" />
 
