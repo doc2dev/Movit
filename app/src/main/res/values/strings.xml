@@ -10,8 +10,8 @@
     <string name="label_latLng">0.00000, 0.00000</string>
     <string name="label_activity_name">Current status: Unknown</string>
     <string name="label_activity_duration">0 days, 0 hours, 0 minutes, 0 seconds</string>
-    <string name="label_start_tracking">Start tracking</string>
-    <string name="label_stop_tracking">stop tracking</string>
+    <string name="label_start_tracking">START TRACKING</string>
+    <string name="label_stop_tracking">STOP TRACKING</string>
     <string name="title_activity_movements">Daily Movements</string>
     <string name="label_movements">My Movements</string>
     <string name="label_date">Today</string>

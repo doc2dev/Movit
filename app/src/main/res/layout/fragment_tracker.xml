@@ -46,16 +46,15 @@
         <com.andela.movit.views.custom.CircleOverlay
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:radius="85"
+            app:radius="60"
             app:stroke_color="@color/colorPrimary"
-            app:stroke_width="3.0"
-            android:layout_gravity="center"/>
+            app:stroke_width="2.0"/>
 
         <Chronometer
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_8"
-            android:textSize="42sp"
+            android:textSize="32sp"
             android:textColor="@color/colorPrimary"
             android:id="@+id/counter"
             android:layout_gravity="center"
