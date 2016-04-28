@@ -1,3 +1,8 @@
+/**
+ * This class provides convenience methods for saving and retrieving {@code Movement} objects
+ * from the database.
+ * */
+
 package com.andela.movit.data;
 
 import android.content.ContentValues;
@@ -5,7 +10,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.andela.movit.models.Movement;
 import com.andela.movit.models.Visit;
@@ -92,6 +96,12 @@ public class DbRepo extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Saves a {@code Movement} object in the database.
+     * @param movement the Movement object to write to the database
+     * @return the id of the row created.
+     * */
+
     public long addMovement(Movement movement) {
         initializeDatabase();
         ContentValues values = getWriteContents(movement);
@@ -99,10 +109,47 @@ public class DbRepo extends SQLiteOpenHelper {
         return newRowId;
     }
 
+    /**
+     * Fetches {@code Movement} objects from the database that were made on the given date.
+     * @param date the date when the movement(s) were made.
+     * @return a list of Movement objects.
+     **/
+
     public List<Movement> getMovementsByDate(Date date) {
         initializeDatabase();
         String[] ranges = getDateRanges(date);
         String query = GET_BY_DATE.replace("foo", ranges[0]).replace("bar", ranges[1]);
+        return extractMovementsFromCursor(runQuery(query));
+    }
+
+    /**
+     * Fetches a list of all the places logged in the database and the total duration spent there,
+     * wrapped in {@code Visit} objects.
+     * @return a list of {@code Visit} objects.
+     * */
+
+    public List<Visit> getVisits() {
+        initializeDatabase();
+        Cursor cursor = runQuery(GET_LOCATIONS);
+        List<Visit> visits = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            Visit visit = new Visit();
+            visit.setPlaceName(cursor.getString(0));
+            visit.setDuration(cursor.getLong(1));
+            visits.add(visit);
+        }
+        return visits;
+    }
+
+    /**
+     * Fetches a list of {@code Movement} objects that were made at a particular location.
+     * @param placeName the place where the movements were made.
+     * @return a list of Movement objects.
+     * */
+
+    public List<Movement> getMovementsByLocation(String placeName) {
+        initializeDatabase();
+        String query = GET_BY_LOCATION.replace("foo", "'" + placeName + "'");
         return extractMovementsFromCursor(runQuery(query));
     }
 
@@ -153,24 +200,5 @@ public class DbRepo extends SQLiteOpenHelper {
         values.put(LONGITUDE, movement.getLongitude());
         values.put(DURATION, movement.getDuration());
         return values;
-    }
-
-    public List<Visit> getVisits() {
-        initializeDatabase();
-        Cursor cursor = runQuery(GET_LOCATIONS);
-        List<Visit> visits = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            Visit visit = new Visit();
-            visit.setPlaceName(cursor.getString(0));
-            visit.setDuration(cursor.getLong(1));
-            visits.add(visit);
-        }
-        return visits;
-    }
-
-    public List<Movement> getMovementsByLocation(String placeName) {
-        initializeDatabase();
-        String query = GET_BY_LOCATION.replace("foo", "'" + placeName + "'");
-        return extractMovementsFromCursor(runQuery(query));
     }
 }
