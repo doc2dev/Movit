@@ -1,3 +1,7 @@
+/**
+ * This interface defines operations to be carried out after an asynchronous database operation.
+ * */
+
 package com.andela.movit.data;
 
 public interface DbCallback {
