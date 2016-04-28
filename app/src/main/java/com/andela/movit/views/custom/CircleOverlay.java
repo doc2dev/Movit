@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import com.andela.movit.R;
@@ -49,13 +50,20 @@ public class CircleOverlay extends View {
                 = context.obtainStyledAttributes(attrs, R.styleable.Custom);
         try {
             radius = typedArray.getFloat(R.styleable.Custom_radius, 0.0f);
+            radius = dpToPx(radius);
             strokeColor = typedArray.getColor(R.styleable.Custom_stroke_color, Color.GRAY);
             strokeWidth = typedArray.getFloat(R.styleable.Custom_stroke_width, 0.5f);
+            strokeWidth = dpToPx(strokeWidth);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             typedArray.recycle();
         }
+    }
+
+    public float dpToPx(float dp) {
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        return dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
     @Override
