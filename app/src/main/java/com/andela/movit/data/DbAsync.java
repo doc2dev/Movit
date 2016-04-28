@@ -1,10 +1,12 @@
+/**
+ * This class provides a means to asynchronously execute a database operation wrapped in a
+ * {@code DbOperation} object. It takes a {@code DbCallback} callback object that will be invoked
+ * with the result of the database operation.
+ * */
+
 package com.andela.movit.data;
 
 import android.os.AsyncTask;
-
-import com.andela.movit.data.DbCallback;
-import com.andela.movit.data.DbOperation;
-import com.andela.movit.data.DbResult;
 
 public class DbAsync extends AsyncTask<DbOperation, String, DbResult> {
 
