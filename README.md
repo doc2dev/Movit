@@ -11,7 +11,7 @@ If you ask yourself these questions frequently, then Movit! is definitely the ap
 
 ##Getting the App
 ###Google Play Store
-Search for "Movit!" on the Google Play Store, or use [this link](http://example.com).
+Search for "Movit!" on the Google Play Store, or use [this link](https://play.google.com/store/apps/details?id=com.andela.movit).
 ###Developer Preview
 To view a developer preview of the app, run the following command on your system (NB: this assumes that you have git and Android Studio 2.+ installed on your system).
 ```
