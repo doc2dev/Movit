@@ -133,7 +133,7 @@ public class ServiceHelper {
         if (movement != null) {
             Intent intent = new Intent(Constants.LOCATION.getValue());
             intent = FrameworkUtils.putMovementInIntent(movement, intent);
-            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            FrameworkUtils.broadcastIntent(context, intent);
         }
     }
 

@@ -133,12 +133,16 @@ public class DbRepo extends SQLiteOpenHelper {
         Cursor cursor = runQuery(GET_LOCATIONS);
         List<Visit> visits = new ArrayList<>();
         while (cursor.moveToNext()) {
-            Visit visit = new Visit();
-            visit.setPlaceName(cursor.getString(0));
-            visit.setDuration(cursor.getLong(1));
-            visits.add(visit);
+            visits.add(getVisitFromCursor(cursor));
         }
         return visits;
+    }
+
+    private Visit getVisitFromCursor(Cursor cursor) {
+        Visit visit = new Visit();
+        visit.setPlaceName(cursor.getString(0));
+        visit.setDuration(cursor.getLong(1));
+        return visit;
     }
 
     /**
