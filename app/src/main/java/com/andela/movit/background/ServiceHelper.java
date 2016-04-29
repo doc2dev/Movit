@@ -1,5 +1,5 @@
 /**
- * This class encapsulates all operations involved in tracking. It exposes methods for starting
+ * This class co-ordinates all operations involved in tracking. It exposes methods for starting
  * and stopping tracking.
  * */
 
