@@ -26,6 +26,10 @@ public class DbRepoTest {
 
     private DbRepo repo;
 
+    private String standingStill = "Standing Still";
+
+    private String instrumentationCenter = "Instrumentation Center";
+
     @Before
     public void setup() throws Exception {
         repo = new DbRepo(Movit.getApp());
@@ -37,8 +41,8 @@ public class DbRepoTest {
         long newRowId = repo.addMovement(getTestMovement());
         assertTrue(newRowId > 0);
         String[] projection = {ACT_NAME};
-        String selection = ACT_NAME + " LIKE ?";
-        String[] selectionArgs = {"Idling"};
+        String selection = ACT_NAME + "= ?";
+        String[] selectionArgs = {standingStill};
         Cursor cursor = movementDb.query(
                 TABLE,
                 projection,
@@ -50,7 +54,7 @@ public class DbRepoTest {
         );
         assertTrue(cursor.moveToNext());
         String activityName = cursor.getString(0);
-        assertEquals("Idling", activityName);
+        assertEquals(standingStill, activityName);
         cursor.close();
     }
 
@@ -68,14 +72,14 @@ public class DbRepoTest {
 
     @Test
     public void testGetByPlaceName() {
-        List<Movement> movements = repo.getMovementsByLocation("Ngong Forest Rd, Nairobi, Kenya");
+        List<Movement> movements = repo.getMovementsByLocation(instrumentationCenter);
         assertTrue(movements.size() > 0);
     }
 
     private Movement getTestMovement() {
         Movement mv = new Movement();
-        mv.setActivityName("Idling");
-        mv.setPlaceName("Test Place");
+        mv.setActivityName(standingStill);
+        mv.setPlaceName(instrumentationCenter);
         mv.setLongitude(0.0005d);
         mv.setLongitude(0.004d);
         mv.setTimeStamp(System.currentTimeMillis());
