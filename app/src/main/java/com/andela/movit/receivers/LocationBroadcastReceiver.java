@@ -10,7 +10,7 @@ import android.content.Intent;
 
 import com.andela.movit.location.LocationCallback;
 import com.andela.movit.models.Movement;
-import com.andela.movit.utilities.Utility;
+import com.andela.movit.utilities.FrameworkUtils;
 
 public class LocationBroadcastReceiver extends BroadcastReceiver {
 
@@ -28,7 +28,7 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Movement movement = Utility.getMovementFromBundle(intent.getExtras());
+        Movement movement = FrameworkUtils.getMovementFromBundle(intent.getExtras());
         locationCallback.onLocationDetected(movement);
     }
 }

@@ -16,6 +16,7 @@ import com.andela.movit.R;
 import com.andela.movit.location.LocationCallback;
 import com.andela.movit.models.Movement;
 import com.andela.movit.location.LocationHelper;
+import com.andela.movit.utilities.FrameworkUtils;
 import com.andela.movit.utilities.Utility;
 import com.andela.movit.views.activities.TrackerActivity;
 
@@ -76,7 +77,7 @@ public class SplashFragment extends Fragment {
         Movit app = Movit.getApp();
         app.setAppLaunched(true);
         app.setInitialLocation(movement);
-        Utility.startActivity(activity, TrackerActivity.class);
+        FrameworkUtils.startActivity(activity, TrackerActivity.class);
         locationHelper.disconnect();
         activity.finish();
     }

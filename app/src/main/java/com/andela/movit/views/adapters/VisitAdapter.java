@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.andela.movit.R;
 import com.andela.movit.models.Visit;
+import com.andela.movit.utilities.FrameworkUtils;
 import com.andela.movit.utilities.Utility;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class VisitAdapter extends FillableAdapter<Visit> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = Utility.getInflater(context).inflate(viewId, null);
+        View view = FrameworkUtils.getInflater(context).inflate(viewId, null);
         Visit visit = items.get(position);
         TextView locationView = (TextView)view.findViewById(R.id.label_visit);
         locationView.setText(visit.getPlaceName());

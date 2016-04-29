@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.andela.movit.models.Movement;
+import com.andela.movit.utilities.FrameworkUtils;
 import com.andela.movit.utilities.Utility;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -99,7 +100,7 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks,
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         String message = "Connection failed, please connect to the internet and turn on Gps.";
-        Utility.makeToast(context, message);
+        FrameworkUtils.makeToast(context, message);
     }
 
     @Override

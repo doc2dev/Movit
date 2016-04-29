@@ -103,7 +103,7 @@ public class TrackingHelper {
         return new DbCallback() {
             @Override
             public void onOperationSuccess(Object result) {
-                Utility.makeToast(context, "Activity logged successfully");
+                FrameworkUtils.makeToast(context, "Activity logged successfully");
             }
 
             @Override

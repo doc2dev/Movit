@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.andela.movit.R;
 import com.andela.movit.models.Movement;
+import com.andela.movit.utilities.FrameworkUtils;
 import com.andela.movit.utilities.Utility;
 
 import java.text.SimpleDateFormat;
@@ -27,7 +28,7 @@ public class MovementAdapter extends FillableAdapter<Movement> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = Utility.getInflater(context).inflate(viewId, null);
+        View view = FrameworkUtils.getInflater(context).inflate(viewId, null);
         Movement movement = items.get(position);
         TextView actView = (TextView)view.findViewById(R.id.label_activity);
         String activity = movement.getActivityName();

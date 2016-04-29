@@ -18,7 +18,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.andela.movit.config.Constants;
 import com.andela.movit.location.IncomingStringCallback;
 import com.andela.movit.receivers.StringBroadcastReceiver;
-import com.andela.movit.utilities.Utility;
+import com.andela.movit.utilities.FrameworkUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -63,7 +63,7 @@ public class RecognitionHelper implements
     }
 
     private void unregisterReceiver() {
-        Utility.unregisterReceiver(context, activityBroadcastReceiver);
+        FrameworkUtils.unregisterReceiver(context, activityBroadcastReceiver);
     }
 
     private void buildApiClient() {
@@ -75,7 +75,7 @@ public class RecognitionHelper implements
     }
 
     private void registerReceiver() {
-        activityBroadcastReceiver = Utility.registerStringReceiver(
+        activityBroadcastReceiver = FrameworkUtils.registerStringReceiver(
                 context, Constants.ACTIVITY_NAME.getValue());
         activityBroadcastReceiver.setIncomingStringCallback(activityCallback);
         LocalBroadcastManager

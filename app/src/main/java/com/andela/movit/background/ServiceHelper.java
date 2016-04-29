@@ -16,7 +16,7 @@ import com.andela.movit.location.LocationCallback;
 import com.andela.movit.models.Movement;
 import com.andela.movit.utilities.PreferenceHelper;
 import com.andela.movit.utilities.TrackingHelper;
-import com.andela.movit.utilities.Utility;
+import com.andela.movit.utilities.FrameworkUtils;
 
 public class ServiceHelper {
 
@@ -132,7 +132,7 @@ public class ServiceHelper {
     private void broadcastLocation(Movement movement) {
         if (movement != null) {
             Intent intent = new Intent(Constants.LOCATION.getValue());
-            intent = Utility.putMovementInIntent(movement, intent);
+            intent = FrameworkUtils.putMovementInIntent(movement, intent);
             LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
         }
     }
@@ -162,7 +162,7 @@ public class ServiceHelper {
         intent.putExtra(
                 Constants.STATEMENT.getValue(),
                 trackingHelper.getActivityStatement(currentActivity));
-        Utility.broadcastIntent(context, intent);
+        FrameworkUtils.broadcastIntent(context, intent);
     }
 
 }
