@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.andela.movit.R;
-import com.andela.movit.utilities.Utility;
+import com.andela.movit.utilities.FrameworkUtils;
 
 public class TrackerActivity extends AppCompatActivity {
 
@@ -35,7 +35,7 @@ public class TrackerActivity extends AppCompatActivity {
                 toggleDrawer();
                 break;
             case R.id.action_settings:
-                Utility.startActivity(this, SettingsActivity.class);
+                FrameworkUtils.startActivity(this, SettingsActivity.class);
                 break;
             default:
                 break;
@@ -78,10 +78,10 @@ public class TrackerActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
                 switch (itemId) {
                     case R.id.my_movements:
-                        Utility.startActivity(TrackerActivity.this, MovementActivity.class);
+                        FrameworkUtils.startActivity(TrackerActivity.this, MovementActivity.class);
                         break;
                     case R.id.my_locations:
-                        Utility.startActivity(TrackerActivity.this, VisitActivity.class);
+                        FrameworkUtils.startActivity(TrackerActivity.this, VisitActivity.class);
                     default:
                         break;
                 }

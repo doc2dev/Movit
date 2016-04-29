@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.andela.movit.Movit;
 import com.andela.movit.R;
 import com.andela.movit.background.TrackingService;
+import com.andela.movit.utilities.FrameworkUtils;
 import com.andela.movit.views.activities.SplashActivity;
 import com.andela.movit.location.IncomingStringCallback;
 import com.andela.movit.location.LocationCallback;
@@ -77,7 +78,7 @@ public class TrackerFragment extends Fragment {
     }
 
     private void launchSplash() {
-        Utility.startActivity(context, SplashActivity.class);
+        FrameworkUtils.startActivity(context, SplashActivity.class);
         context.finish();
     }
 
@@ -150,7 +151,7 @@ public class TrackerFragment extends Fragment {
     }
 
     private void registerStatementReceiver() {
-        statementReceiver = Utility.registerStringReceiver(context, STATEMENT.getValue());
+        statementReceiver = FrameworkUtils.registerStringReceiver(context, STATEMENT.getValue());
         statementReceiver.setIncomingStringCallback(statementCallback);
     }
 
@@ -191,8 +192,8 @@ public class TrackerFragment extends Fragment {
 
     @Override
     public void onPause() {
-        Utility.unregisterReceiver(context, locationReceiver);
-        Utility.unregisterReceiver(context, statementReceiver);
+        FrameworkUtils.unregisterReceiver(context, locationReceiver);
+        FrameworkUtils.unregisterReceiver(context, statementReceiver);
         super.onPause();
     }
 

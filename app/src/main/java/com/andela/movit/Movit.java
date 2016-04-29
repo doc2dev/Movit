@@ -7,7 +7,7 @@ import android.support.test.espresso.IdlingResource;
 
 import com.andela.movit.background.TrackingService;
 import com.andela.movit.models.Movement;
-import com.andela.movit.utilities.Utility;
+import com.andela.movit.utilities.FrameworkUtils;
 
 public class Movit extends Application implements IdlingResource {
 
@@ -81,7 +81,7 @@ public class Movit extends Application implements IdlingResource {
 
     @Override
     public void onTerminate() {
-        Utility.stopService(this, TrackingService.class);
+        FrameworkUtils.stopService(this, TrackingService.class);
         super.onTerminate();
     }
 
