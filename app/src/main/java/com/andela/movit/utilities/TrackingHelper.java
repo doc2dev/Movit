@@ -1,3 +1,10 @@
+/**
+ * This class wraps the respective location and recognition helpers to co-ordinate tracking
+ * activities. It provides start and stop methods for tracking, and setters for the current
+ * movement object (which stores the current location) and the current activity. It also provides
+ * a method for logging the current activity.
+ * */
+
 package com.andela.movit.utilities;
 
 import android.content.Context;
@@ -24,35 +31,13 @@ public class TrackingHelper {
 
     private Movement movement;
 
-    private boolean isActive;
-
     private String currentActivity = "Unknown";
 
-    private long timeBeforeLogging;
+    private long durationBeforeLogging;
 
     public TrackingHelper(Context context) {
         this.context = context;
         initializeVariables();
-    }
-
-    public void setMovement(Movement movement) {
-        this.movement = movement;
-    }
-
-    public void setCurrentActivity(String activity) {
-        currentActivity = activity;
-    }
-
-    public void setTimeBeforeLogging(long timeBeforeLogging) {
-        this.timeBeforeLogging = timeBeforeLogging;
-    }
-
-    public void setActivityCallback(IncomingStringCallback activityCallback) {
-        recognitionHelper.setActivityCallback(activityCallback);
-    }
-
-    public void setLocationCallback(LocationCallback locationCallback) {
-        locationHelper.setLocationCallback(locationCallback);
     }
 
     private void initializeVariables() {
@@ -61,7 +46,57 @@ public class TrackingHelper {
         currentActivity = "Unknown";
     }
 
-    public void logCurrentActivity(String activity, long elapsedTime) {
+    /**
+     * Stores a {@code Movement} object that holds the current location.
+     * @param movement the movement object containing details of the current location.
+     * */
+
+    public void setMovement(Movement movement) {
+        this.movement = movement;
+    }
+
+    /**
+     * Stores the name of the current activity.
+     * @param activity the current activity.
+     * */
+
+    public void setCurrentActivity(String activity) {
+        currentActivity = activity;
+    }
+
+    /**
+     * Sets the minimum duration for which an activity has to be performed before it can be logged.
+     * @param durationBeforeLogging the duration before logging (in milliseconds);
+     * */
+
+    public void setDurationBeforeLogging(long durationBeforeLogging) {
+        this.durationBeforeLogging = durationBeforeLogging;
+    }
+
+    /**
+     * Sets the callback to be invoked whenever an activity is detected.
+     * @param activityCallback the callback object.
+     * */
+
+    public void setActivityCallback(IncomingStringCallback activityCallback) {
+        recognitionHelper.setActivityCallback(activityCallback);
+    }
+
+    /**
+     * Sets the callback to be invoked whenever a new location is detected.
+     * @param locationCallback the callback object.
+     * */
+
+    public void setLocationCallback(LocationCallback locationCallback) {
+        locationHelper.setLocationCallback(locationCallback);
+    }
+
+    /**
+     * Appends the an activity name to the current stored {@code Movement} object, then writes
+     * it to the database.
+     * */
+
+    public void logActivity(String activity, long elapsedTime) {
         if (!isActivityUnknown(activity)) {
             movement.setActivityName(activity);
             movement.setDuration(elapsedTime);
@@ -79,20 +114,26 @@ public class TrackingHelper {
         dbAsync.execute(getInsertOperation(movement));
     }
 
+    /**
+     * Starts the tracking process.
+     * */
+
     public void startTracking() {
         locationHelper.connect();
         recognitionHelper.connect();
-        isActive = true;
     }
+
+    /**
+     * Stops the tracking process.
+     * */
 
     public void stopTracking() {
         locationHelper.disconnect();
         recognitionHelper.disconnect();
-        isActive = false;
     }
 
     public boolean hasTimeElapsed(long timeElapsed) {
-        return timeElapsed >= timeBeforeLogging;
+        return timeElapsed >= durationBeforeLogging;
     }
 
     public boolean hasActivityChanged(String activityName) {
@@ -111,6 +152,10 @@ public class TrackingHelper {
             }
         };
     }
+
+    /**
+     * Returns a string representing an activity.
+     * */
 
     public String getActivityStatement(String activityName) {
         if (isActivityUnknown(activityName)) {

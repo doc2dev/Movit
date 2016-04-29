@@ -45,14 +45,27 @@ public class RecognitionHelper implements
         buildApiClient();
     }
 
+    /**
+     * Sets the callback that will be invoked whenever an activity is detected.
+     * @param activityCallback the callback object.
+     * */
+
     public void setActivityCallback(IncomingStringCallback activityCallback) {
         this.activityCallback = activityCallback;
     }
+
+    /**
+     * Connects the API client and starts activity recognition.
+     * */
 
     public void connect() {
         registerReceiver();
         apiClient.connect();
     }
+
+    /**
+     * Stops activity recognition and disconnects the API client.
+     * */
 
     public void disconnect() {
         if (apiClient.isConnected()) {

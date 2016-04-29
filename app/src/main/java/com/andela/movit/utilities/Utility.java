@@ -60,6 +60,6 @@ public class Utility {
 
     private static String formatNumber(int number) {
         String numString = Integer.toString(number);
-        return number < 9 ? "0" + numString : numString;
+        return number < 10 ? "0" + numString : numString;
     }
 }

@@ -86,7 +86,7 @@ public class ServiceHelper {
     private void logMovement(String activityName) {
         long elapsedTime = counter.getElapsedTime();
         if (trackingHelper.hasTimeElapsed(elapsedTime)) {
-            trackingHelper.logCurrentActivity(activityName, elapsedTime);
+            trackingHelper.logActivity(activityName, elapsedTime);
         }
     }
 
@@ -111,7 +111,7 @@ public class ServiceHelper {
         trackingHelper.setLocationCallback(getLocationCallback());
         trackingHelper.setActivityCallback(getActivityCallback());
         PreferenceHelper preferenceHelper = new PreferenceHelper(Movit.getApp());
-        trackingHelper.setTimeBeforeLogging(preferenceHelper.getTimeBeforeLogging());
+        trackingHelper.setDurationBeforeLogging(preferenceHelper.getTimeBeforeLogging());
     }
 
     private LocationCallback getLocationCallback() {
