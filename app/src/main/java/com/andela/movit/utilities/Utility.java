@@ -1,23 +1,10 @@
 package com.andela.movit.utilities;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
-import android.view.LayoutInflater;
-import android.widget.Toast;
-
-import com.andela.movit.Movit;
 import com.andela.movit.models.Movement;
-import com.andela.movit.receivers.StringBroadcastReceiver;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import static com.andela.movit.config.Constants.*;
 
 public class Utility {
 
