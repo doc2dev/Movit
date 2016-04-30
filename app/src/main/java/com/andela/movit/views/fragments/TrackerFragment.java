@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andela.movit.Movit;
@@ -40,7 +41,7 @@ public class TrackerFragment extends Fragment {
 
     private TextView activityNameView;
 
-    private Button trackButton;
+    private ImageView trackButton;
 
     private String currentActivity = "Unknown";
 
@@ -97,7 +98,7 @@ public class TrackerFragment extends Fragment {
         locationName = (TextView) rootView.findViewById(R.id.location_name);
         locationCoords = (TextView) rootView.findViewById(R.id.location_coords);
         activityNameView = (TextView) rootView.findViewById(R.id.activity_name);
-        trackButton = (Button) rootView.findViewById(R.id.trackButton);
+        trackButton = (ImageView) rootView.findViewById(R.id.trackButton);
         counter = (Chronometer) rootView.findViewById(R.id.counter);
     }
 
@@ -144,9 +145,9 @@ public class TrackerFragment extends Fragment {
 
     private void toggleButton(boolean isTracking) {
         if (isTracking) {
-            trackButton.setText(R.string.label_stop_tracking);
+            trackButton.setImageResource(R.drawable.stop);
         } else {
-            trackButton.setText(R.string.label_start_tracking);
+            trackButton.setImageResource(R.drawable.play);
         }
     }
 
