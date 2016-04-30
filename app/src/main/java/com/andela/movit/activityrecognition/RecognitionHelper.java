@@ -108,7 +108,7 @@ public class RecognitionHelper implements
     private void startActivityRecognition() {
         pendingIntent = getPendingIntent();
         ActivityRecognition.ActivityRecognitionApi
-                .requestActivityUpdates(apiClient, 0, pendingIntent);
+                .requestActivityUpdates(apiClient, 100, pendingIntent);
     }
 
     private void stopActivityRecognition() {
