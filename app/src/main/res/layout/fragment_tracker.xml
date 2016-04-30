@@ -2,27 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingStart="@dimen/dimen_16"
     android:paddingEnd="@dimen/dimen_16"
     android:paddingBottom="@dimen/dimen_16"
-    android:paddingTop="@dimen/dimen_16">
-
-    <ImageView
-        android:layout_width="@dimen/dimen_tracker"
-        android:layout_height="@dimen/dimen_tracker"
-        android:src="@drawable/tracker"
-        android:id="@+id/tracker_icon"
-        android:tint="@color/colorTrack"/>
+    android:paddingTop="@dimen/dimen_16"
+    android:background="@color/colorPrimaryDark">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/tracker_icon"
         android:text="@string/label_unknown"
-        android:layout_marginStart="@dimen/dimen_16"
-        android:textSize="@dimen/font_24"
-        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/font_20"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/colorWhite"
         android:id="@+id/location_name"/>
 
     <TextView
@@ -30,12 +22,10 @@
         android:layout_height="wrap_content"
         android:text="@string/label_latLng"
         android:layout_below="@id/location_name"
-        android:layout_toEndOf="@id/tracker_icon"
-        android:layout_marginStart="@dimen/dimen_16"
         android:layout_marginTop="@dimen/dimen_16"
-        android:textSize="16sp"
+        android:textSize="@dimen/font_12"
         android:id="@+id/location_coords"
-        android:textColor="@color/colorTextPrimary"/>
+        android:textColor="@color/colorWhite"/>
 
     <FrameLayout
         android:layout_width="@dimen/dimen_img"
@@ -43,19 +33,12 @@
         android:id="@+id/counter_container"
         android:layout_centerInParent="true">
 
-        <com.andela.movit.views.custom.CircleOverlay
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:radius="60"
-            app:stroke_color="@color/colorPrimary"
-            app:stroke_width="2.0"/>
-
         <Chronometer
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_8"
-            android:textSize="32sp"
-            android:textColor="@color/colorPrimary"
+            android:textSize="72sp"
+            android:textColor="@color/colorWhite"
             android:id="@+id/counter"
             android:layout_gravity="center"
             android:textStyle="italic"
@@ -66,21 +49,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label_activity_name"
-        android:textSize="@dimen/font_20"
-        android:textColor="@color/colorTextPrimary"
+        android:textSize="@dimen/font_16"
+        android:textColor="@color/colorWhite"
         android:id="@+id/activity_name"
-        android:layout_below="@id/counter_container"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@id/location_coords"
         android:layout_marginTop="@dimen/dimen_32"
-        android:textStyle="bold"/>
+        android:fontFamily="sans-serif-regular"/>
 
-    <android.support.v7.widget.AppCompatButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_start_tracking"
+    <ImageView
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="@dimen/dimen_8"
-        android:theme="@style/TrackButton"
+        android:src="@drawable/play"
+        android:tint="@color/colorAccent"
         android:layout_marginTop="@dimen/dimen_4"
         android:textSize="@dimen/font_24"
         android:padding="@dimen/dimen_16"

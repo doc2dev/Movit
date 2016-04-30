@@ -24,7 +24,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:paddingBottom="80dp"
-        android:theme="@style/Alt"
         app:itemTextColor="@color/colorTextPrimary"
-        app:menu="@menu/nav_menu" />
+        app:menu="@menu/nav_menu"
+        app:theme="@style/Nav"
+        />
 </android.support.v4.widget.DrawerLayout>
