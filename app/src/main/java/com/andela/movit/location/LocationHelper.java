@@ -38,15 +38,34 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks,
         this.context = context;
     }
 
+    /**
+     * Sets the callback to be called once location is detected.
+     * @param locationCallback the callback object.
+     * */
+
     public void setLocationCallback(LocationCallback locationCallback) {
         this.locationCallback = locationCallback;
     }
+
+    /**
+     * Connects to location services
+     * */
 
     public void connect() {
         if (apiClient == null) {
             initializeApiClient();
         }
         apiClient.connect();
+    }
+
+    /**
+     * Disconnect from location services.
+     * */
+
+    public void disconnect() {
+        if (apiClient.isConnected()) {
+            stopLocationUpdates();
+        }
     }
 
     private void initializeLocationRequest() {
@@ -65,12 +84,6 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks,
         }
     }
 
-    public void disconnect() {
-        if (apiClient.isConnected()) {
-            stopLocationUpdates();
-        }
-    }
-
     private void stopLocationUpdates() {
         try {
             LocationServices.FusedLocationApi.removeLocationUpdates(apiClient, this);
@@ -79,7 +92,7 @@ public class LocationHelper implements GoogleApiClient.ConnectionCallbacks,
         }
     }
 
-    private synchronized void initializeApiClient() {
+    private void initializeApiClient() {
         apiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
