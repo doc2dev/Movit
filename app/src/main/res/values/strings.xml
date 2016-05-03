@@ -8,7 +8,7 @@
     <string name="google_app_id">AIzaSyCIm1LSjXvyHTsuaHg4_-bUmagqboClxEo</string>
     <string name="label_unknown">Unknown Location</string>
     <string name="label_latLng">0.00000, 0.00000</string>
-    <string name="label_activity_name">Current status: Unknown</string>
+    <string name="label_activity_name">Unknown</string>
     <string name="label_activity_duration">0 days, 0 hours, 0 minutes, 0 seconds</string>
     <string name="label_start_tracking">START TRACKING</string>
     <string name="label_stop_tracking">STOP TRACKING</string>

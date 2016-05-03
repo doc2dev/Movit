@@ -37,8 +37,6 @@ public class TrackerFragment extends Fragment {
 
     private TextView locationName;
 
-    private TextView locationCoords;
-
     private TextView activityNameView;
 
     private ImageView trackButton;
@@ -52,6 +50,8 @@ public class TrackerFragment extends Fragment {
     private StringBroadcastReceiver statementReceiver;
 
     private LocationBroadcastReceiver locationReceiver;
+
+    private ImageView activityIcon;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,10 +96,10 @@ public class TrackerFragment extends Fragment {
 
     private void initializeViews() {
         locationName = (TextView) rootView.findViewById(R.id.location_name);
-        locationCoords = (TextView) rootView.findViewById(R.id.location_coords);
         activityNameView = (TextView) rootView.findViewById(R.id.activity_name);
         trackButton = (ImageView) rootView.findViewById(R.id.trackButton);
         counter = (Chronometer) rootView.findViewById(R.id.counter);
+        activityIcon = (ImageView) rootView.findViewById(R.id.label_status);
     }
 
     private void setTrackClickListener() {
@@ -180,13 +180,13 @@ public class TrackerFragment extends Fragment {
 
     private void displayLocation(Movement mv) {
         locationName.setText(mv.getPlaceName());
-        locationCoords.setText(Utility.getCoordsString(mv));
     }
 
     private void displayActivity(String activity) {
         if (!currentActivity.equals(activity)) {
             activityNameView.setText(activity);
             currentActivity = activity;
+            activityIcon.setImageResource(FrameworkUtils.getIconId(activity));
             restartCounter();
         }
     }

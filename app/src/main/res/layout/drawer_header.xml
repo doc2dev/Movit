@@ -8,14 +8,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="144dp"
-        android:src="@drawable/movit"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Movit"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/font_24"/>
+        android:layout_height="match_parent"
+        android:src="@drawable/drawer"/>
 
 </LinearLayout>

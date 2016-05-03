@@ -20,12 +20,13 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_drawer"
-        android:layout_width="wrap_content"
+        android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:paddingBottom="80dp"
-        app:itemTextColor="@color/colorTextPrimary"
         app:menu="@menu/nav_menu"
         app:theme="@style/Nav"
+        app:itemTextColor="@color/colorPrimary"
+        app:itemIconTint="@color/colorPrimary"
         />
 </android.support.v4.widget.DrawerLayout>
