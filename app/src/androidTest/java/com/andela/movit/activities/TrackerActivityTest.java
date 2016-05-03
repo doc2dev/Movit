@@ -46,10 +46,10 @@ public class TrackerActivityTest {
         checkIfAppIdle();
         onView(withId(R.id.trackButton)).perform(click());
         onView(withId(R.id.activity_name))
-                .check(matches(withText("Current status: Unknown")));
+                .check(matches(withText("Unknown")));
         pauseRunner();
         onView(withId(R.id.activity_name))
-                .check(matches(withText("Current status: Standing Still")));
+                .check(matches(withText("Standing Still")));
         setAppIdle();
     }
 
