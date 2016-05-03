@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.andela.movit.config.Constants;
+import com.andela.movit.utilities.FrameworkUtils;
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
 
@@ -40,7 +41,7 @@ public class ActivityRecognitionService extends IntentService {
 
     private void handleDetectedActivities(List<DetectedActivity> probableActivities) {
         probableActivities = sortActivities(probableActivities);
-        String activityName = getActivityName(probableActivities.get(0));
+        String activityName = FrameworkUtils.getActivityName(probableActivities.get(0));
         broadcastActivityName(activityName);
     }
 
@@ -66,26 +67,5 @@ public class ActivityRecognitionService extends IntentService {
 
     private boolean hasResult(Intent intent) {
         return ActivityRecognitionResult.hasResult(intent);
-    }
-
-    public String getActivityName(DetectedActivity activity) {
-        switch (activity.getType()) {
-            case IN_VEHICLE:
-                return "Travelling";
-            case ON_BICYCLE:
-                return "Cycling";
-            case ON_FOOT:
-                return "Walking";
-            case RUNNING:
-                return "Running";
-            case STILL:
-                return "Standing Still";
-            case TILTING:
-                return "Standing Still";
-            case WALKING:
-                return "Walking";
-            default:
-                return "Unknown";
-        }
     }
 }

@@ -36,7 +36,7 @@ public class MovementAdapter extends FillableAdapter<Movement> {
         TextView locView = (TextView)view.findViewById(R.id.label_visit);
         locView.setText(getDescription(movement));
         ImageView icon = (ImageView)view.findViewById(R.id.icon_activity);
-        icon.setImageResource(getIconId(activity));
+        icon.setImageResource(FrameworkUtils.getIconId(activity));
         return view;
     }
 
@@ -44,30 +44,5 @@ public class MovementAdapter extends FillableAdapter<Movement> {
         return movement.getPlaceName()
                 + ", for "
                 + Utility.getDurationString(movement.getDuration());
-    }
-
-    private int getIconId(String activity) {
-        switch (activity) {
-            case "Travelling":
-                return R.drawable.travel;
-            case "Cycling":
-                return R.drawable.cycle;
-            case "Walking":
-                return R.drawable.walk;
-            case "Running":
-                return R.drawable.run;
-            case "Standing Still":
-                return R.drawable.stand;
-            case "On Foot":
-                return R.drawable.walk;
-            default:
-                return R.drawable.unknown;
-        }
-    }
-
-    private String getTimeString(long timestamp) {
-        Date date = new Date(timestamp);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
-        return dateFormat.format(date);
     }
 }

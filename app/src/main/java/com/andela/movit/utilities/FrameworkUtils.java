@@ -9,14 +9,23 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.widget.Toast;
 
+import com.andela.movit.R;
 import com.andela.movit.models.Movement;
 import com.andela.movit.receivers.StringBroadcastReceiver;
+import com.google.android.gms.location.DetectedActivity;
 
 import static com.andela.movit.config.Constants.ACTIVITY_NAME;
 import static com.andela.movit.config.Constants.LATITUDE;
 import static com.andela.movit.config.Constants.LONGITUDE;
 import static com.andela.movit.config.Constants.PLACE_NAME;
 import static com.andela.movit.config.Constants.TIMESTAMP;
+import static com.google.android.gms.location.DetectedActivity.IN_VEHICLE;
+import static com.google.android.gms.location.DetectedActivity.ON_BICYCLE;
+import static com.google.android.gms.location.DetectedActivity.ON_FOOT;
+import static com.google.android.gms.location.DetectedActivity.RUNNING;
+import static com.google.android.gms.location.DetectedActivity.STILL;
+import static com.google.android.gms.location.DetectedActivity.TILTING;
+import static com.google.android.gms.location.DetectedActivity.WALKING;
 
 public class FrameworkUtils {
 
@@ -78,5 +87,43 @@ public class FrameworkUtils {
 
     public static void broadcastIntent(Context context, Intent intent) {
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    public static String getActivityName(DetectedActivity activity) {
+        switch (activity.getType()) {
+            case IN_VEHICLE:
+                return "Travelling";
+            case ON_BICYCLE:
+                return "Cycling";
+            case ON_FOOT:
+                return "Walking";
+            case RUNNING:
+                return "Running";
+            case STILL:
+                return "Standing Still";
+            case TILTING:
+                return "Standing Still";
+            case WALKING:
+                return "Walking";
+            default:
+                return "Unknown";
+        }
+    }
+
+    public static int getIconId(String activity) {
+        switch (activity) {
+            case "Travelling":
+                return R.drawable.travel;
+            case "Cycling":
+                return R.drawable.cycle;
+            case "Walking":
+                return R.drawable.walk;
+            case "Running":
+                return R.drawable.run;
+            case "On Foot":
+                return R.drawable.walk;
+            default:
+                return R.drawable.stand;
+        }
     }
 }
