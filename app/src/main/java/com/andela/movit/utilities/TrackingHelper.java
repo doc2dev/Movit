@@ -153,17 +153,6 @@ public class TrackingHelper {
         };
     }
 
-    /**
-     * Returns a string representing an activity.
-     * */
-
-    public String getActivityStatement(String activityName) {
-        if (isActivityUnknown(activityName)) {
-            return context.getString(R.string.label_activity_name);
-        }
-        return "Current status: " + activityName;
-    }
-
     private DbOperation getInsertOperation(final Movement movement) {
         return new DbOperation() {
             @Override
