@@ -161,7 +161,7 @@ public class ServiceHelper {
         Intent intent = new Intent(Constants.STATEMENT.getValue());
         intent.putExtra(
                 Constants.STATEMENT.getValue(),
-                trackingHelper.getActivityStatement(currentActivity));
+                currentActivity);
         FrameworkUtils.broadcastIntent(context, intent);
     }
 
